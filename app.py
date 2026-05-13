@@ -764,100 +764,102 @@ Write exactly 3 paragraphs:
 Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
 """
 
-# ── Homepage story ─────────────────────────────────────────────────────────
-p1_count = int((action_queue["Priority"] == "P1").sum()) if not action_queue.empty else 0
-late_context = f"{_fl_on_time:.1f}% on time" if _fl_on_time else "real data pending"
-repeat_context = f"{_ret_repeat:.1f}% repeat" if _ret_repeat else "real data pending"
-if action_queue.empty:
-    top_leak = "Run the data build"
-    top_owner = "Ops"
-    top_impact = "Pending"
-    top_action = "Generate the real-data files to populate the operating story."
-else:
-    top_row = action_queue.iloc[0]
-    top_leak = escape(str(top_row["Leak"]))
-    top_owner = escape(str(top_row["Owner"]))
-    top_impact = brl(top_row["Impact"])
-    top_action = escape(str(top_row["Recommended action"]))
-
-st.markdown(f"""
-<div class="story-shell">
-  <div class="story-header">
-    <div>
-      <p class="kpi-label" style="margin:0 0 6px">{RETAILER_NAME} operating story</p>
-      <p class="story-title">Revenue is leaking after the click.</p>
-      <p class="story-copy">The story is simple: paid demand looks productive, fulfillment decides the customer experience, and weak repeat purchase keeps acquisition from compounding.</p>
-    </div>
-  </div>
-  <div class="story-rail">
-    <div class="story-beat" style="--beat-color:#7c6bff">
-      <p class="story-label">Spend</p>
-      <p class="story-number">{avg_mer:.2f}x MER</p>
-      <p class="story-line">R${total_spend/1e6:.1f}M in media spend. Platforms claim +{overclaim_pct:.0f}% above Shopify truth.</p>
-    </div>
-    <div class="story-arrow">→</div>
-    <div class="story-beat" style="--beat-color:#22d3a0">
-      <p class="story-label">Delivery</p>
-      <p class="story-number">{late_context}</p>
-      <p class="story-line">{f'{_fl_orders_k:.0f}k orders, {_fl_days:.1f} day average delivery.' if _fl_on_time else 'Build Olist files for fulfillment coverage.'}</p>
-    </div>
-    <div class="story-arrow">→</div>
-    <div class="story-beat" style="--beat-color:#f5c542">
-      <p class="story-label">Repeat</p>
-      <p class="story-number">{repeat_context}</p>
-      <p class="story-line">{f'{_ret_customers_k:.0f}k customers, R${_ret_ltv:.0f} average 180d LTV.' if _ret_repeat else 'Build Olist files for cohort coverage.'}</p>
-    </div>
-  </div>
-  <div class="story-action">
-    <div>
-      <p class="story-action-title">Next move: {top_leak}</p>
-      <p class="story-action-copy">{top_owner} owns {top_impact} of estimated impact. {top_action}</p>
-    </div>
-    <div class="story-pill">{p1_count} P1 leaks</div>
-  </div>
-</div>
-""", unsafe_allow_html=True)
-
-ai_status = "Live key provided" if api_key else "Demo mode"
-cta_left, cta_right = st.columns([0.26, 0.74])
-with cta_left:
-    top_generate_btn = st.button("Generate client brief", type="primary", use_container_width=True, key="top_ai_generate")
-with cta_right:
-    st.caption(f"AI Brief Studio · {ai_status} · live model gpt-oss-20b · demo fallback remains available")
-top_brief_placeholder = st.empty()
-if top_generate_btn:
-    generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
-
-with st.expander("Supporting action queue and source coverage"):
-    if action_queue_display.empty:
-        st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
+if page == "🤖 Executive Brief":
+    # ── Homepage story ─────────────────────────────────────────────────────────
+    p1_count = int((action_queue["Priority"] == "P1").sum()) if not action_queue.empty else 0
+    late_context = f"{_fl_on_time:.1f}% on time" if _fl_on_time else "real data pending"
+    repeat_context = f"{_ret_repeat:.1f}% repeat" if _ret_repeat else "real data pending"
+    if action_queue.empty:
+        top_leak = "Run the data build"
+        top_owner = "Ops"
+        top_impact = "Pending"
+        top_action = "Generate the real-data files to populate the operating story."
     else:
-        support_queue = action_queue_display[["Priority", "Leak", "Impact", "Owner", "Confidence", "Source"]].head(6)
-        st.markdown("**Action queue**")
-        st.dataframe(
-            support_queue,
-            use_container_width=True,
-            hide_index=True,
+        top_row = action_queue.iloc[0]
+        top_leak = escape(str(top_row["Leak"]))
+        top_owner = escape(str(top_row["Owner"]))
+        top_impact = brl(top_row["Impact"])
+        top_action = escape(str(top_row["Recommended action"]))
+
+    st.markdown(f"""
+    <div class="story-shell">
+      <div class="story-header">
+        <div>
+          <p class="kpi-label" style="margin:0 0 6px">{RETAILER_NAME} operating story</p>
+          <p class="story-title">Revenue is leaking after the click.</p>
+          <p class="story-copy">The story is simple: paid demand looks productive, fulfillment decides the customer experience, and weak repeat purchase keeps acquisition from compounding.</p>
+        </div>
+      </div>
+      <div class="story-rail">
+        <div class="story-beat" style="--beat-color:#7c6bff">
+          <p class="story-label">Spend</p>
+          <p class="story-number">{avg_mer:.2f}x MER</p>
+          <p class="story-line">R${total_spend/1e6:.1f}M in media spend. Platforms claim +{overclaim_pct:.0f}% above Shopify truth.</p>
+        </div>
+        <div class="story-arrow">→</div>
+        <div class="story-beat" style="--beat-color:#22d3a0">
+          <p class="story-label">Delivery</p>
+          <p class="story-number">{late_context}</p>
+          <p class="story-line">{f'{_fl_orders_k:.0f}k orders, {_fl_days:.1f} day average delivery.' if _fl_on_time else 'Build Olist files for fulfillment coverage.'}</p>
+        </div>
+        <div class="story-arrow">→</div>
+        <div class="story-beat" style="--beat-color:#f5c542">
+          <p class="story-label">Repeat</p>
+          <p class="story-number">{repeat_context}</p>
+          <p class="story-line">{f'{_ret_customers_k:.0f}k customers, R${_ret_ltv:.0f} average 180d LTV.' if _ret_repeat else 'Build Olist files for cohort coverage.'}</p>
+        </div>
+      </div>
+      <div class="story-action">
+        <div>
+          <p class="story-action-title">Next move: {top_leak}</p>
+          <p class="story-action-copy">{top_owner} owns {top_impact} of estimated impact. {top_action}</p>
+        </div>
+        <div class="story-pill">{p1_count} P1 leaks</div>
+      </div>
+    </div>
+    """, unsafe_allow_html=True)
+
+    ai_status = "Live key provided" if api_key else "Demo mode"
+    cta_left, cta_right = st.columns([0.26, 0.74])
+    with cta_left:
+        top_generate_btn = st.button("Generate client brief", type="primary", use_container_width=True, key="top_ai_generate")
+    with cta_right:
+        st.caption(f"AI Brief Studio · {ai_status} · live model gpt-oss-20b · demo fallback remains available")
+    top_brief_placeholder = st.empty()
+    if top_generate_btn:
+        generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
+
+    with st.expander("Supporting action queue and source coverage"):
+        if action_queue_display.empty:
+            st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
+        else:
+            support_queue = action_queue_display[["Priority", "Leak", "Impact", "Owner", "Confidence", "Source"]].head(6)
+            st.markdown("**Action queue**")
+            st.dataframe(
+                support_queue,
+                use_container_width=True,
+                hide_index=True,
+            )
+        st.markdown(
+            "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
         )
-    st.markdown(
-        "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
-    )
-    st.dataframe(source_health, use_container_width=True, hide_index=True)
+        st.dataframe(source_health, use_container_width=True, hide_index=True)
 
-st.divider()
+    st.divider()
 
-# ── Tabs ───────────────────────────────────────────────────────────────────
-t_brief, t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_chargeback = st.tabs([
-    "🤖 Client Brief",
-    "📊 Evidence: Sales",
-    "📅 Evidence: Demand",
-    "🟣 Evidence: Spend",
-    "🟡 Evidence: Customers",
-    "🟢 Evidence: Delivery",
-    "💳 Evidence: Payments",
-    "🏪 Evidence: Sellers",
-    "🚨 Evidence: Risk",
+# ── Navigation ─────────────────────────────────────────────────────────────
+page = st.sidebar.radio("Navigation", [
+    "🤖 Executive Brief",
+    "📊 Sales",
+    "📅 Demand",
+    "🟣 Spend",
+    "🟡 Customers",
+    "🟢 Delivery",
+    "💳 Payments",
+    "🏪 Sellers",
+    "🚨 Risk",
 ])
+
 
 # ═══════════════════════════════════════════════════════════════════════════
 # SEASONALITY
@@ -865,7 +867,7 @@ t_brief, t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_ch
 MONTH_NAMES = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-with t_season:
+if page == "📅 Demand":
     st.markdown("### Seasonal demand patterns")
     st.markdown(
         '<p class="kpi-label">Real Olist dataset · Sep 2016 – Oct 2018 · delivered orders</p>',
@@ -1033,7 +1035,7 @@ The year-over-year chart shows whether last year's pattern is repeating this yea
 # ═══════════════════════════════════════════════════════════════════════════
 # SALES
 # ═══════════════════════════════════════════════════════════════════════════
-with t_sales:
+if page == "📊 Sales":
     st.markdown("### Sales overview")
 
     s_k1, s_k2, s_k3, s_k4 = st.columns(4)
@@ -1111,7 +1113,7 @@ Top category: <strong>{top_category.replace('_', ' ').title()}</strong>.
 # ═══════════════════════════════════════════════════════════════════════════
 # ATTRIBUTION  (indigo)
 # ═══════════════════════════════════════════════════════════════════════════
-with t_attr:
+if page == "🟣 Spend":
     # ── Section 1: The Lie ─────────────────────────────────────────────────
     st.markdown(
         '<p style="color:#7c6bff;font-size:10px;letter-spacing:.15em;'
@@ -1330,7 +1332,7 @@ as you change channel mix.
 # ═══════════════════════════════════════════════════════════════════════════
 # FULFILLMENT  (emerald)
 # ═══════════════════════════════════════════════════════════════════════════
-with t_fulfill:
+if page == "🟢 Delivery":
     # ── Section 1: Delivery SLA ────────────────────────────────────────────
     st.markdown(
         '<p style="color:#22d3a0;font-size:10px;letter-spacing:.15em;'
@@ -1547,7 +1549,7 @@ These regions are the clearest opportunity for localised fulfilment investment.
 # ═══════════════════════════════════════════════════════════════════════════
 # RETENTION  (amber)
 # ═══════════════════════════════════════════════════════════════════════════
-with t_retain:
+if page == "🟡 Customers":
     # ── Section 1: Cohorts ────────────────────────────────────────────────
     st.markdown(
         '<p style="color:#f5c542;font-size:10px;letter-spacing:.15em;'
@@ -1742,7 +1744,7 @@ Best-rated: {best_cat_row['primary_category']} at {best_cat_row['avg_score']:.2f
 # ═══════════════════════════════════════════════════════════════════════════
 # ORDER RISK
 # ═══════════════════════════════════════════════════════════════════════════
-with t_risk:
+if page == "💳 Payments":
     st.markdown("### Payment mix & cancellation risk")
     st.markdown(
         '<p class="kpi-label">Real Olist dataset · 99k orders · payment type, installments, cancellations</p>',
@@ -1841,7 +1843,7 @@ verification before shipping.
 # ═══════════════════════════════════════════════════════════════════════════
 # SELLERS
 # ═══════════════════════════════════════════════════════════════════════════
-with t_sellers:
+if page == "🏪 Sellers":
     st.markdown("### Seller performance & revenue concentration")
     st.markdown(
         '<p class="kpi-label">Real Olist dataset · 1,238 qualifying sellers · 10+ orders each</p>',
@@ -1934,7 +1936,7 @@ with t_sellers:
 # ═══════════════════════════════════════════════════════════════════════════
 # CHARGEBACK RISK
 # ═══════════════════════════════════════════════════════════════════════════
-with t_chargeback:
+if page == "🚨 Risk":
     st.markdown("### Dispute & chargeback risk — order-level flagging")
     st.markdown(
         '<p class="kpi-label">Real Olist dataset · delivered orders only · 3-signal evidence model</p>',
@@ -2078,7 +2080,7 @@ in these categories is the highest-ROI first step.
 # ═══════════════════════════════════════════════════════════════════════════
 # AI BRIEF
 # ═══════════════════════════════════════════════════════════════════════════
-with t_brief:
+if page == "🤖 Executive Brief":
     st.markdown("### Weekly Commerce Brief — AI-Generated")
     st.markdown("""
 <div class="callout">
