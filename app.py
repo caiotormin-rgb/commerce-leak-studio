@@ -252,7 +252,7 @@ No API key provided. Enter your OpenAI API key in the sidebar, or use demo mode 
             from openai import OpenAI
             client = OpenAI(api_key=api_key)
             stream = client.responses.create(
-                model="gpt-5.2",
+                model="gpt-oss-20b",
                 input=[
                     {
                         "role": "user",
@@ -404,9 +404,9 @@ with st.sidebar:
         "OpenAI API key",
         type="password",
         placeholder="sk-...",
-        help="Optional. Demo mode still works when quota is unavailable.",
+        help="Optional. Live generation uses gpt-oss-20b; demo mode still works when quota is unavailable.",
     )
-    st.caption("Live mode uses your OpenAI key. Demo mode stays visible during quota issues.")
+    st.caption("Live mode uses OpenAI's open-weight gpt-oss-20b model. Demo mode stays visible during quota issues.")
 
     st.divider()
     st.markdown("""
@@ -446,9 +446,7 @@ st.markdown(f"""
 <p class="kpi-label">{RETAILER_NAME} · {date_range[0].strftime("%b %Y")} — {date_range[1].strftime("%b %Y")} · BRL · demo identity</p>
 """, unsafe_allow_html=True)
 
-# ── Top KPI strip ──────────────────────────────────────────────────────────
-k1, k2, k3, k4, k5, k6 = st.columns(6)
-
+# ── Core period metrics ────────────────────────────────────────────────────
 total_rev     = wf["shopify_revenue"].sum()
 total_spend   = wf["total_spend"].sum()
 avg_mer       = total_rev / total_spend
@@ -463,16 +461,6 @@ if "anomaly" not in wf.columns:
     wf["mer_lower"]    = wf["mer_baseline"] - 1.5 * wf["mer_std"]
     wf["mer_upper"]    = wf["mer_baseline"] + 1.5 * wf["mer_std"]
     wf["anomaly"]      = (wf["mer"] < wf["mer_lower"]) | (wf["mer"] > wf["mer_upper"])
-
-k1.metric("Shopify Revenue", f"R${total_rev/1e6:.1f}M")
-k2.metric("Total Ad Spend",  f"R${total_spend/1e6:.1f}M")
-k3.metric("Revenue per R$1 spent", f"{avg_mer:.2f}x",
-          delta=f"{((last_mer/prev_mer)-1)*100:+.1f}% recent")
-k4.metric("Platforms Claim", f"R${total_claimed/1e6:.1f}M",
-          delta=f"+{overclaim_pct:.0f}% vs reality", delta_color="inverse")
-k5.metric("Analytics gap",   f"−{avg_ga4_miss:.0f}%",
-          delta="revenue your analytics missed", delta_color="inverse")
-k6.metric("Weeks Analysed",  f"{len(wf)}")
 
 # ── Pillar KPIs for funnel banner ─────────────────────────────────────────
 _fl_on_time = _fl_days = _fl_orders_k = None
@@ -684,9 +672,87 @@ Write exactly 3 paragraphs:
 Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
 """
 
+# ── Executive snapshot ─────────────────────────────────────────────────────
+p1_count = int((action_queue["Priority"] == "P1").sum()) if not action_queue.empty else 0
+late_context = f"{_fl_on_time:.1f}% on time" if _fl_on_time else "real data pending"
+repeat_context = f"{_ret_repeat:.1f}% repeat" if _ret_repeat else "real data pending"
+
+snap1, snap2, snap3, snap4 = st.columns(4)
+snap1.metric("Revenue", f"R${total_rev/1e6:.1f}M")
+snap2.metric("Spend", f"R${total_spend/1e6:.1f}M")
+snap3.metric("MER", f"{avg_mer:.2f}x", delta=f"{((last_mer/prev_mer)-1)*100:+.1f}% recent")
+snap4.metric("P1 leaks", f"{p1_count}", delta="needs owner action", delta_color="inverse")
+
+with st.expander("More period metrics"):
+    more1, more2, more3, more4 = st.columns(4)
+    more1.metric("Platforms Claim", f"R${total_claimed/1e6:.1f}M", delta=f"+{overclaim_pct:.0f}% vs reality", delta_color="inverse")
+    more2.metric("Analytics gap", f"−{avg_ga4_miss:.0f}%", delta="revenue missed", delta_color="inverse")
+    more3.metric("Fulfillment", late_context)
+    more4.metric("Retention", repeat_context)
+    st.caption(f"{len(wf)} synthetic weeks analysed. Real Olist tabs use the generated CSV files.")
+
+overview_left, overview_right = st.columns([1.35, 0.85])
+
+with overview_left:
+    st.markdown("### This Week's Leaks")
+    st.markdown(
+        '<p class="kpi-label">Top 3 owner-ready actions · impact-ranked</p>',
+        unsafe_allow_html=True,
+    )
+    if action_queue_display.empty:
+        st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
+    else:
+        queue_columns = {
+            "Priority": st.column_config.TextColumn("Priority", width="small"),
+            "Leak": st.column_config.TextColumn("Leak", width="medium"),
+            "Impact": st.column_config.TextColumn("Impact", width="small"),
+            "Owner": st.column_config.TextColumn("Owner", width="small"),
+            "Recommended action": st.column_config.TextColumn("Recommended action", width="large"),
+            "Confidence": st.column_config.TextColumn("Confidence", width="small"),
+            "Source": st.column_config.TextColumn("Source", width="medium"),
+        }
+        st.dataframe(
+            action_queue_display.head(3),
+            use_container_width=True,
+            hide_index=True,
+            height=184,
+            column_config=queue_columns,
+        )
+        with st.expander("View full action queue"):
+            st.dataframe(
+                action_queue_display,
+                use_container_width=True,
+                hide_index=True,
+                column_config=queue_columns,
+            )
+
+with overview_right:
+    ai_status = "Live key provided" if api_key else "Demo mode"
+    st.markdown(f"""
+<div class="ai-hero" style="margin-top:0">
+  <p class="brand-subtitle" style="color:#7c6bff;margin:0 0 6px">AI Brief Studio</p>
+  <p class="ai-hero-title">Brief the client from the current queue</p>
+  <p class="ai-status" style="margin:0">
+    <strong>Status:</strong> {ai_status}. Live generation uses OpenAI's open-weight <code>gpt-oss-20b</code> model through the Responses API.
+  </p>
+</div>
+""", unsafe_allow_html=True)
+    top_generate_btn = st.button("Generate AI Brief", type="primary", use_container_width=True, key="top_ai_generate")
+    top_brief_placeholder = st.empty()
+    if top_generate_btn:
+        generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
+    else:
+        st.caption("Use the button for a live brief, or open the AI Brief tab for the demo output and full prompt.")
+        with st.expander("Preview demo brief"):
+            st.markdown(
+                render_brief_box(DEMO_BRIEF, 0.74, "Quota-safe preview:"),
+                unsafe_allow_html=True,
+            )
+
 # ── Funnel / flow navigator ────────────────────────────────────────────────
-st.markdown(f"""
-<div style="display:flex;align-items:stretch;gap:0;margin:16px 0 20px;border-radius:10px;overflow:hidden">
+with st.expander("Operating flow: attribution → fulfillment → retention"):
+    st.markdown(f"""
+<div style="display:flex;align-items:stretch;gap:0;margin:8px 0 4px;border-radius:10px;overflow:hidden">
 
   <div style="flex:1;background:#12122a;border-top:3px solid #7c6bff;padding:14px 18px">
     <p style="color:#7c6bff;font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 6px;font-family:monospace">01 · Attribution</p>
@@ -720,52 +786,6 @@ st.markdown(f"""
 </div>
 """, unsafe_allow_html=True)
 
-st.markdown("### This Week's Leaks")
-st.markdown(
-    '<p class="kpi-label">Prioritized operating queue · impact-ranked · owner-ready</p>',
-    unsafe_allow_html=True,
-)
-if action_queue_display.empty:
-    st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
-else:
-    st.dataframe(
-        action_queue_display,
-        use_container_width=True,
-        hide_index=True,
-        column_config={
-            "Priority": st.column_config.TextColumn("Priority", width="small"),
-            "Leak": st.column_config.TextColumn("Leak", width="medium"),
-            "Impact": st.column_config.TextColumn("Impact", width="small"),
-            "Owner": st.column_config.TextColumn("Owner", width="small"),
-            "Recommended action": st.column_config.TextColumn("Recommended action", width="large"),
-            "Confidence": st.column_config.TextColumn("Confidence", width="small"),
-            "Source": st.column_config.TextColumn("Source", width="medium"),
-        },
-    )
-
-ai_status = "Live key provided" if api_key else "Demo mode"
-st.markdown(f"""
-<div class="ai-hero">
-  <p class="brand-subtitle" style="color:#7c6bff;margin:0 0 6px">AI Brief Studio</p>
-  <p class="ai-hero-title">Turn this queue into an executive brief</p>
-  <p class="ai-status" style="margin:0">
-    <strong>Status:</strong> {ai_status}. The dashboard keeps a quota-safe demo brief visible when live AI is unavailable.
-    Live generation uses the action queue, fulfillment metrics, retention metrics, chargeback exposure, and attribution context.
-  </p>
-</div>
-""", unsafe_allow_html=True)
-ai_top_cols = st.columns([1, 3])
-with ai_top_cols[0]:
-    top_generate_btn = st.button("Generate AI Brief", type="primary", use_container_width=True, key="top_ai_generate")
-top_brief_placeholder = st.empty()
-if top_generate_btn:
-    generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
-else:
-    top_brief_placeholder.markdown(
-        render_brief_box(DEMO_BRIEF, 0.62, "Quota-safe preview from the branded AI brief studio:"),
-        unsafe_allow_html=True,
-    )
-
 with st.expander("Data trust and source coverage"):
     st.markdown(
         "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
@@ -775,7 +795,8 @@ with st.expander("Data trust and source coverage"):
 st.divider()
 
 # ── Tabs ───────────────────────────────────────────────────────────────────
-t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_chargeback, t_brief = st.tabs([
+t_brief, t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_chargeback = st.tabs([
+    "🤖 AI Brief",
     "🧾 Sales",
     "📅 Seasonality",
     "🟣 Attribution",
@@ -784,7 +805,6 @@ t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_chargeback,
     "💳 Order Risk",
     "🏪 Sellers",
     "🚨 Chargeback Risk",
-    "🤖 AI Brief",
 ])
 
 # ═══════════════════════════════════════════════════════════════════════════

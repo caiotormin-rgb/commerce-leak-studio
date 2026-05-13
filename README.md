@@ -10,57 +10,44 @@ Promise: find the profit leaks hiding between marketing, fulfillment, and retent
 
 ## What it shows
 
-**Tab 1 — Sales Performance**
-General sales overview: revenue, orders, AOV, weekly trend, monthly seasonality,
-and category mix.
+**Tab 1 — AI Brief**
+Live/demo weekly commerce brief using the current metrics and action queue.
 
-**Tab 2 — The Attribution Lie**
-Platform-reported revenue vs Shopify ground truth. Meta + Google + Email collectively
-claim ~140% of actual revenue. The demo makes this visceral with charts and math.
+**Tab 2 — Sales**
+Baseline revenue context: revenue, orders, AOV, weekly trend, and category mix.
 
-**Tab 3 — MER Reality**
-Media Efficiency Ratio (Total Revenue ÷ Total Spend) as the north star metric that
-sidesteps platform self-reporting entirely. Includes anomaly detection and
-spend-mix correlation analysis.
+**Tab 3 — Seasonality**
+Monthly demand cycles, seasonal index, year-over-year orders, and category demand mix.
 
-**Tab 4 — Reviews**
-Review score trends, low-star review share, response time patterns, and category
-quality weak spots.
+**Tab 4 — Attribution**
+Platform-reported revenue vs Shopify ground truth, MER anomaly detection, spend mix,
+and GA4 tracking gap.
 
-**Tab 5 — Geo Patterns**
-State and region demand patterns with delivery friction, late-delivery rate,
-review score, and return-rate overlays.
+**Tab 5 — Retention**
+Cohort retention, LTV curves, review distribution, score trends, and category quality.
 
-**Tab 6 — Returns**
-Return rate, refund value, return reasons, and category-level return risk.
+**Tab 6 — Fulfillment**
+Delivery lateness impact on reviews, monthly delivery trend, and geographic coverage.
 
-**Tab 7 — Cohort Intelligence**
-Monthly cohort retention heatmap + LTV curves. A March 2017 anomaly is baked in:
-a Meta broad-targeting spike brought high-volume, low-quality customers — visible
-as 3× lower 90d retention vs every other cohort.
+**Tab 7 — Order Risk**
+Payment type and installment cancellation risk.
 
-**Tab 8 — Fulfillment Intelligence** *(real Olist data)*
-Delivery SLA performance from the actual Olist dataset. Core insight: on-time
-orders average 4.3★, orders 8–14 days late drop to 1.7★. Includes review score
-× lateness correlation, monthly trend, and category-level on-time scatter.
+**Tab 8 — Sellers**
+Seller quality, revenue concentration, and worst-rated seller table.
 
-**Tab 9 — Geo Intelligence** *(real Olist data)*
-Geographic demand and delivery patterns by Brazilian state. Revenue concentration,
-delivery speed by state, late delivery rates, and buyer/seller coverage gaps
-(PA has 922 buyers per 1 seller — most underserved market in the dataset).
+**Tab 9 — Chargeback Risk**
+Three-signal chargeback proxy model, monthly risk trend, and category revenue at risk.
 
 **Top-level — This Week's Leaks**
-Owner-ready action queue ranking attribution, fulfillment, retention, payment,
-chargeback, and seller-quality leaks by estimated impact.
+Compact top-three action queue ranking attribution, fulfillment, retention,
+payment, chargeback, and seller-quality leaks by estimated impact. The full
+queue sits behind an expander.
 
 **Top-level — AI Brief Studio**
 Prominent AI panel that turns the action queue into an executive commerce brief.
-Enter an OpenAI API key in the sidebar to generate live. If quota is unavailable,
-the app falls back to a polished demo brief instead of blocking the experience.
-
-**Tab 10 — AI Brief**
-Expanded prompt view and live/demo weekly commerce brief using metrics and the
-action queue from the dashboard.
+Enter an OpenAI API key in the sidebar to generate live with `gpt-oss-20b`.
+If quota is unavailable, the app falls back to a polished demo brief instead of
+blocking the experience.
 
 ## Run locally
 
@@ -106,5 +93,5 @@ No real customer data. Safe to share publicly.
 | In-process SQL | DuckDB |
 | UI | Streamlit |
 | Charts | Plotly |
-| AI brief | OpenAI Responses API |
+| AI brief | OpenAI Responses API with `gpt-oss-20b` |
 | Hosting | Streamlit Community Cloud |

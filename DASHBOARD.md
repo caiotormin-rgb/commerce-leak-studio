@@ -24,18 +24,18 @@
 - OpenAI API key — text input used by the top AI panel and AI Brief tab
 - Quota-safe demo-mode note for the AI Brief Studio
 
-### KPI strip (top of every page, 6 columns)
+### Executive snapshot (top of every page, 4 columns)
 | Metric | Source | Notes |
 |---|---|---|
-| Shopify Revenue | `wf["shopify_revenue"].sum()` | Filtered by period |
-| Total Ad Spend | `wf["total_spend"].sum()` | |
-| Blended MER | Revenue / Spend | delta = recent 5-week change |
-| Platforms Claim | `wf["total_claimed"].sum()` | delta = overclaim % vs reality |
-| GA4 Gap | `wf["ga4_missing_pct"].mean()` | |
-| Weeks Analysed | `len(wf)` | |
+| Revenue | `wf["shopify_revenue"].sum()` | Filtered by period |
+| Spend | `wf["total_spend"].sum()` | |
+| MER | Revenue / Spend | delta = recent 5-week change |
+| P1 leaks | action queue priority count | owner-action signal |
+
+Platforms claim, GA4 gap, fulfillment, retention, and weeks analysed sit in a secondary expander.
 
 ### Funnel / flow banner
-Three panels connected by `▶` arrows. Pulls live numbers at render time.
+Expandable operating-flow panel with three connected stages. Pulls live numbers at render time.
 
 | Panel | Color | Key metric shown |
 |---|---|---|
@@ -46,7 +46,7 @@ Three panels connected by `▶` arrows. Pulls live numbers at render time.
 Fallback text if real data files are absent ("Run build script for live data").
 
 ### This Week's Leaks
-Top-level action queue below the funnel banner and above the tabs.
+Top-level action queue beside the AI Brief Studio and above the tabs. Only the top three actions are visible by default; the full queue is expandable.
 
 | Column | Meaning |
 |---|---|
@@ -64,13 +64,13 @@ Includes platform overclaim, late delivery exposure, low repeat purchase, charge
 Expandable source coverage table showing which synthetic and real generated datasets are available and when the real files were last built.
 
 ### AI Brief Studio
-Prominent panel below the action queue and above the tabs.
+Prominent panel beside the action queue and above the tabs.
 
 | Element | Detail |
 |---|---|
 | Button | Generate AI Brief |
-| Live mode | Streams from OpenAI Responses API using the dashboard prompt |
-| Demo mode | Shows a polished brief preview without API usage |
+| Live mode | Streams from OpenAI Responses API using `gpt-oss-20b` and the dashboard prompt |
+| Demo mode | Keeps a polished brief preview available without API usage |
 | Quota mode | Catches quota, rate-limit, and billing errors and falls back to demo output |
 
 ---
@@ -261,7 +261,7 @@ Outlier detection: `ret_90d < mean_90d − 1.5 * std_90d` → red border on heat
 **KPIs (4):** MER this week (vs prev) · Shopify revenue (WoW %) · Total spend (WoW %) · Overclaim %
 
 **Prompt structure:** 3-paragraph format — What happened · What it means · First action. Includes attribution metrics, operations context, risk context, and the prioritized action queue.  
-Model: `gpt-5.2`, `max_output_tokens=600`, streamed through the OpenAI Responses API.
+Model: `gpt-oss-20b`, `max_output_tokens=600`, streamed through the OpenAI Responses API.
 
 **Static demo** shown when no key, no click, or quota is unavailable.  
 **Expander:** Full prompt context displayed as code block.
