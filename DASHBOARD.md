@@ -70,10 +70,10 @@ Single primary CTA below the story and above the tabs.
 
 | Pillar | Hex | Used in tabs |
 |---|---|---|
-| Attribution | `#7c6bff` | 🟣 Attribution |
-| Fulfillment | `#22d3a0` | 🟢 Fulfillment |
-| Retention | `#f5c542` | 🟡 Retention |
-| Neutral | `#3b9eff` | 🧾 Sales, 📅 Seasonality |
+| Attribution | `#7c6bff` | 🟣 Evidence: Spend |
+| Fulfillment | `#22d3a0` | 🟢 Evidence: Delivery |
+| Retention | `#f5c542` | 🟡 Evidence: Customers |
+| Neutral | `#3b9eff` | 📊 Evidence: Sales, 📅 Evidence: Demand |
 
 CSS callout variants: `.callout` (default indigo), `.callout-red`, `.callout-green`, `.callout-amber`
 
@@ -81,7 +81,7 @@ CSS callout variants: `.callout` (default indigo), `.callout-red`, `.callout-gre
 
 ## Tabs
 
-### 🧾 Sales
+### 📊 Evidence: Sales
 **Data:** Synthetic weekly (`wf`, `cf`)  
 **Purpose:** Baseline context before interpreting any attribution, retention, or geo data.
 
@@ -98,7 +98,7 @@ CSS callout variants: `.callout` (default indigo), `.callout-red`, `.callout-gre
 
 ---
 
-### 📅 Seasonality
+### 📅 Evidence: Demand
 **Data:** Real Olist `data/seasonality_monthly.csv`, `data/seasonality_cat_monthly.csv`  
 **Purpose:** Show repeating demand cycles, month-of-year patterns, YoY comparison.
 
@@ -118,7 +118,7 @@ CSS callout variants: `.callout` (default indigo), `.callout-red`, `.callout-gre
 
 ---
 
-### 🟣 Attribution
+### 🟣 Evidence: Spend
 **Data:** Synthetic weekly (`wf`)  
 **Purpose:** Show the attribution problem: platform overclaiming, MER as truth, GA4 gap.  
 **Pillar color:** `#7c6bff` indigo
@@ -154,7 +154,7 @@ Three sections separated by `.pillar-section` dividers:
 
 ---
 
-### 🟢 Fulfillment
+### 🟢 Evidence: Delivery
 **Data:** Real Olist  
 **Purpose:** Connect delivery lateness to review scores; show geographic delivery friction.  
 **Pillar color:** `#22d3a0` emerald
@@ -183,7 +183,7 @@ Two sections:
 
 ---
 
-### 🟡 Retention
+### 🟡 Evidence: Customers
 **Data:** Real Olist  
 **Purpose:** Show near-zero repeat purchase, low LTV, and review quality by category.  
 **Pillar color:** `#f5c542` amber
@@ -215,7 +215,7 @@ Outlier detection: `ret_90d < mean_90d − 1.5 * std_90d` → red border on heat
 
 ---
 
-### 💳 Order Risk
+### 💳 Evidence: Payments
 **Data:** Real Olist `data/payments_by_type.csv`, `data/payments_installments.csv`  
 **Purpose:** Identify high-cancellation payment segments.
 
@@ -230,7 +230,7 @@ Outlier detection: `ret_90d < mean_90d − 1.5 * std_90d` → red border on heat
 
 ---
 
-### 🏪 Sellers
+### 🏪 Evidence: Sellers
 **Data:** Real Olist `data/seller_performance.csv`, `data/seller_concentration.csv`  
 **Purpose:** Surface underperforming sellers and revenue concentration risk.
 
@@ -245,7 +245,7 @@ Outlier detection: `ret_90d < mean_90d − 1.5 * std_90d` → red border on heat
 
 ---
 
-### 🤖 AI Brief
+### 🤖 Client Brief
 **Data:** Last week from `wf`; streams from OpenAI API  
 **Purpose:** Demo the product: LLM-generated weekly commerce brief.
 

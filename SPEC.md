@@ -73,12 +73,12 @@ Renders as a single primary button under the home story and above the tab bar.
 ## Tab order
 
 ```
-🤖 AI Brief  |  🧾 Sales  |  📅 Seasonality  |  🟣 Attribution  |  🟡 Retention  |  🟢 Fulfillment  |  💳 Order Risk  |  🏪 Sellers  |  🚨 Chargeback Risk
+🤖 Client Brief  |  📊 Evidence: Sales  |  📅 Evidence: Demand  |  🟣 Evidence: Spend  |  🟡 Evidence: Customers  |  🟢 Evidence: Delivery  |  💳 Evidence: Payments  |  🏪 Evidence: Sellers  |  🚨 Evidence: Risk
 ```
 
 ---
 
-## Tab 1 — 🧾 Sales
+## Tab 1 — 📊 Evidence: Sales
 
 **Purpose:** Baseline revenue context before interpreting any other tab.  
 **Data:** Synthetic weekly (`wf`, `cf`) · filtered by sidebar period slider.  
@@ -115,7 +115,7 @@ Default indigo. Shows peak week date, revenue, orders.
 
 ---
 
-## Tab 2 — 📅 Seasonality
+## Tab 2 — 📅 Evidence: Demand
 
 **Purpose:** Identify repeating demand cycles; plan spend allocation around peaks.  
 **Data:** `data/seasonality_monthly.csv`, `data/seasonality_cat_monthly.csv` · Sep 2016–Oct 2018.  
@@ -168,7 +168,7 @@ Default indigo. Explains seasonal index and YoY chart usage.
 
 ---
 
-## Tab 3 — 🟣 Attribution
+## Tab 3 — 🟣 Evidence: Spend
 
 **Purpose:** Prove the attribution problem; offer MER as the honest alternative.  
 **Data:** Synthetic weekly (`wf`) · filtered by sidebar period slider.  
@@ -233,7 +233,7 @@ Three sections separated by `.pillar-section` dividers.
 
 ---
 
-## Tab 4 — 🟡 Retention
+## Tab 4 — 🟡 Evidence: Customers
 
 **Purpose:** Show 2.1% repeat rate as the core business problem; surface review quality as a signal.  
 **Data:** `data/cohorts_real.csv`, `data/reviews_*.csv` · Sep 2016–Oct 2018.  
@@ -303,7 +303,7 @@ Two sections.
 
 ---
 
-## Tab 5 — 🟢 Fulfillment
+## Tab 5 — 🟢 Evidence: Delivery
 
 **Purpose:** Connect delivery lateness to review scores; surface geographic friction.  
 **Data:** `data/fulfillment_*.csv`, `data/geo_state_real.csv` · Sep 2016–Oct 2018.  
@@ -377,7 +377,7 @@ Two sections.
 
 ---
 
-## Tab 6 — 💳 Order Risk
+## Tab 6 — 💳 Evidence: Payments
 
 **Purpose:** Identify payment segments with highest cancellation rates.  
 **Data:** `data/payments_by_type.csv`, `data/payments_installments.csv`.  
@@ -414,7 +414,7 @@ Two equal columns.
 
 ---
 
-## Tab 7 — 🏪 Sellers
+## Tab 7 — 🏪 Evidence: Sellers
 
 **Purpose:** Surface underperforming sellers; show revenue concentration risk.  
 **Data:** `data/seller_performance.csv` (1,238 sellers, ≥10 orders), `data/seller_concentration.csv`.  
@@ -457,7 +457,7 @@ Two columns (3:2), then full-width expander.
 
 ---
 
-## Tab 8 — 🚨 Chargeback Risk
+## Tab 8 — 🚨 Evidence: Risk
 
 **Purpose:** Flag delivered orders most likely to generate chargebacks; quantify revenue at risk by category.  
 **Data:** `data/chargeback_monthly.csv`, `data/chargeback_by_category.csv`, `data/chargeback_evidence.csv`.  
@@ -518,7 +518,7 @@ Row 1: two columns (3:2). Row 2: two columns (3:2).
 
 ---
 
-## Tab 9 — 🤖 AI Brief
+## Tab 9 — 🤖 Client Brief
 
 **Purpose:** Demo the packaged AI layer — LLM-generated weekly commerce brief.  
 **Data:** Last row of `wf` (synthetic) + OpenAI API (optional).  

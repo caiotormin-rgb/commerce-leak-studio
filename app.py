@@ -848,15 +848,15 @@ st.divider()
 
 # ── Tabs ───────────────────────────────────────────────────────────────────
 t_brief, t_sales, t_season, t_attr, t_retain, t_fulfill, t_risk, t_sellers, t_chargeback = st.tabs([
-    "🤖 AI Brief",
-    "🧾 Sales",
-    "📅 Seasonality",
-    "🟣 Attribution",
-    "🟡 Retention",
-    "🟢 Fulfillment",
-    "💳 Order Risk",
-    "🏪 Sellers",
-    "🚨 Chargeback Risk",
+    "🤖 Client Brief",
+    "📊 Evidence: Sales",
+    "📅 Evidence: Demand",
+    "🟣 Evidence: Spend",
+    "🟡 Evidence: Customers",
+    "🟢 Evidence: Delivery",
+    "💳 Evidence: Payments",
+    "🏪 Evidence: Sellers",
+    "🚨 Evidence: Risk",
 ])
 
 # ═══════════════════════════════════════════════════════════════════════════

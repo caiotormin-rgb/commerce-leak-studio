@@ -10,32 +10,32 @@ Promise: find the profit leaks hiding between marketing, fulfillment, and retent
 
 ## What it shows
 
-**Tab 1 — AI Brief**
+**Tab 1 — Client Brief**
 Live/demo weekly commerce brief using the current metrics and action queue.
 
-**Tab 2 — Sales**
+**Tab 2 — Evidence: Sales**
 Baseline revenue context: revenue, orders, AOV, weekly trend, and category mix.
 
-**Tab 3 — Seasonality**
+**Tab 3 — Evidence: Demand**
 Monthly demand cycles, seasonal index, year-over-year orders, and category demand mix.
 
-**Tab 4 — Attribution**
+**Tab 4 — Evidence: Spend**
 Platform-reported revenue vs Shopify ground truth, MER anomaly detection, spend mix,
 and GA4 tracking gap.
 
-**Tab 5 — Retention**
+**Tab 5 — Evidence: Customers**
 Cohort retention, LTV curves, review distribution, score trends, and category quality.
 
-**Tab 6 — Fulfillment**
+**Tab 6 — Evidence: Delivery**
 Delivery lateness impact on reviews, monthly delivery trend, and geographic coverage.
 
-**Tab 7 — Order Risk**
+**Tab 7 — Evidence: Payments**
 Payment type and installment cancellation risk.
 
-**Tab 8 — Sellers**
+**Tab 8 — Evidence: Sellers**
 Seller quality, revenue concentration, and worst-rated seller table.
 
-**Tab 9 — Chargeback Risk**
+**Tab 9 — Evidence: Risk**
 Three-signal chargeback proxy model, monthly risk trend, and category revenue at risk.
 
 **Top-level — Home story**
