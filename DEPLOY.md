@@ -68,7 +68,11 @@ To:
 public_html/index.html
 ```
 
-Then update the `Launch live demo` and `Open Dashboard` links in `deploy/godaddy_static/index.html` to the Streamlit Cloud URL after the dashboard is live.
+The `Launch live demo` and `Open Dashboard` links currently point to:
+
+```text
+https://tormin-retail-demo.streamlit.app/
+```
 
 ## GoDaddy / cPanel Python Hosting Caveat
 
