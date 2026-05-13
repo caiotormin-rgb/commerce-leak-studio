@@ -65,10 +65,16 @@ deploy/godaddy_static/index.html
 To:
 
 ```text
-public_html/index.html
+public_html/retail-demo/index.html
 ```
 
-The `Launch live demo` and `Open Dashboard` links currently point to:
+Then the GoDaddy landing page will live at:
+
+```text
+https://YOUR_DOMAIN/retail-demo/
+```
+
+The `Launch live demo` and `Open Dashboard` links on that page currently point to:
 
 ```text
 https://tormin-retail-demo.streamlit.app/
