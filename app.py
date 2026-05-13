@@ -161,14 +161,119 @@ st.markdown("""
     font-weight: 800;
     margin: 0 0 4px;
   }
-  .ai-status {
-    color: #a0a0c0;
-    font-size: 12px;
-    line-height: 1.6;
-  }
-  .ai-status strong { color: #eeeeff; }
+	  .ai-status {
+	    color: #a0a0c0;
+	    font-size: 12px;
+	    line-height: 1.6;
+	  }
+	  .ai-status strong { color: #eeeeff; }
 
-  #MainMenu, footer, header { visibility: hidden; }
+	  .story-shell {
+	    margin: 12px 0 22px;
+	    padding: 22px 4px 8px;
+	    border-top: 1px solid #202034;
+	    border-bottom: 1px solid #202034;
+	  }
+	  .story-header {
+	    display: flex;
+	    justify-content: space-between;
+	    align-items: flex-start;
+	    gap: 28px;
+	    margin-bottom: 22px;
+	  }
+	  .story-title {
+	    color: #eeeeff;
+	    font-size: 34px;
+	    font-weight: 900;
+	    line-height: 1.08;
+	    max-width: 680px;
+	    margin: 0 0 8px;
+	  }
+	  .story-copy {
+	    color: #8d8daf;
+	    font-size: 14px;
+	    line-height: 1.6;
+	    max-width: 700px;
+	    margin: 0;
+	  }
+	  .story-ai {
+	    min-width: 250px;
+	    padding-top: 4px;
+	  }
+	  .story-rail {
+	    display: grid;
+	    grid-template-columns: minmax(0, 1fr) 38px minmax(0, 1fr) 38px minmax(0, 1fr);
+	    gap: 0;
+	    align-items: center;
+	    margin: 14px 0 18px;
+	  }
+	  .story-beat {
+	    padding: 4px 0 10px;
+	    border-top: 3px solid var(--beat-color);
+	  }
+	  .story-label {
+	    color: var(--beat-color);
+	    font-family: monospace;
+	    font-size: 10px;
+	    letter-spacing: .12em;
+	    text-transform: uppercase;
+	    margin: 10px 0 8px;
+	  }
+	  .story-number {
+	    color: #eeeeff;
+	    font-size: 32px;
+	    font-weight: 900;
+	    line-height: 1;
+	    margin: 0 0 8px;
+	  }
+	  .story-line {
+	    color: #8d8daf;
+	    font-size: 12px;
+	    line-height: 1.45;
+	    margin: 0;
+	  }
+	  .story-arrow {
+	    color: #3a3a5f;
+	    font-size: 28px;
+	    font-weight: 900;
+	    text-align: center;
+	  }
+	  .story-action {
+	    display: flex;
+	    justify-content: space-between;
+	    gap: 24px;
+	    align-items: center;
+	    padding-top: 14px;
+	    border-top: 1px solid #1c1c2a;
+	  }
+	  .story-action-title {
+	    color: #eeeeff;
+	    font-size: 16px;
+	    font-weight: 850;
+	    margin: 0 0 4px;
+	  }
+	  .story-action-copy {
+	    color: #8d8daf;
+	    font-size: 12px;
+	    line-height: 1.5;
+	    margin: 0;
+	  }
+	  .story-pill {
+	    color: #d8d8f0;
+	    border: 1px solid #343456;
+	    border-radius: 999px;
+	    padding: 7px 11px;
+	    font-size: 11px;
+	    white-space: nowrap;
+	  }
+	  @media (max-width: 900px) {
+	    .story-header, .story-action { display: block; }
+	    .story-ai { min-width: 0; margin-top: 16px; }
+	    .story-rail { grid-template-columns: 1fr; gap: 12px; }
+	    .story-arrow { transform: rotate(90deg); }
+	  }
+
+	  #MainMenu, footer, header { visibility: hidden; }
   hr { border-color: #1c1c2a; }
 </style>
 """, unsafe_allow_html=True)
@@ -462,7 +567,7 @@ if "anomaly" not in wf.columns:
     wf["mer_upper"]    = wf["mer_baseline"] + 1.5 * wf["mer_std"]
     wf["anomaly"]      = (wf["mer"] < wf["mer_lower"]) | (wf["mer"] > wf["mer_upper"])
 
-# ── Pillar KPIs for funnel banner ─────────────────────────────────────────
+# ── Pillar KPIs for operating flow ────────────────────────────────────────
 _fl_on_time = _fl_days = _fl_orders_k = None
 if fl_monthly is not None:
     _fw = fl_monthly["orders"]
@@ -476,19 +581,6 @@ if cohorts_real is not None:
     _ret_repeat       = (cohorts_real["ret_180d"] * _sz).sum() / _sz.sum() * 100
     _ret_ltv          = cohorts_real["ltv_180d"].mean()
     _ret_customers_k  = _sz.sum() / 1000
-
-_fulfill_html = (
-    f'<p style="color:#22d3a0;font-size:22px;font-weight:800;margin:4px 0">{_fl_on_time:.1f}% on time</p>'
-    f'<p style="color:#6060a0;font-size:11px;margin:0">{_fl_orders_k:.0f}k orders · avg {_fl_days:.1f} days</p>'
-    if _fl_on_time else
-    '<p style="color:#6060a0;font-size:11px">Run build script for live data</p>'
-)
-_retain_html = (
-    f'<p style="color:#f5c542;font-size:22px;font-weight:800;margin:4px 0">{_ret_repeat:.1f}% repeat</p>'
-    f'<p style="color:#6060a0;font-size:11px;margin:0">{_ret_customers_k:.0f}k customers · R${_ret_ltv:.0f} LTV</p>'
-    if _ret_repeat else
-    '<p style="color:#6060a0;font-size:11px">Run build script for live data</p>'
-)
 
 # ── Action queue inputs ───────────────────────────────────────────────────
 action_rows = []
@@ -672,121 +764,81 @@ Write exactly 3 paragraphs:
 Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
 """
 
-# ── Executive snapshot ─────────────────────────────────────────────────────
+# ── Homepage story ─────────────────────────────────────────────────────────
 p1_count = int((action_queue["Priority"] == "P1").sum()) if not action_queue.empty else 0
 late_context = f"{_fl_on_time:.1f}% on time" if _fl_on_time else "real data pending"
 repeat_context = f"{_ret_repeat:.1f}% repeat" if _ret_repeat else "real data pending"
+if action_queue.empty:
+    top_leak = "Run the data build"
+    top_owner = "Ops"
+    top_impact = "Pending"
+    top_action = "Generate the real-data files to populate the operating story."
+else:
+    top_row = action_queue.iloc[0]
+    top_leak = escape(str(top_row["Leak"]))
+    top_owner = escape(str(top_row["Owner"]))
+    top_impact = brl(top_row["Impact"])
+    top_action = escape(str(top_row["Recommended action"]))
 
-snap1, snap2, snap3, snap4 = st.columns(4)
-snap1.metric("Revenue", f"R${total_rev/1e6:.1f}M")
-snap2.metric("Spend", f"R${total_spend/1e6:.1f}M")
-snap3.metric("MER", f"{avg_mer:.2f}x", delta=f"{((last_mer/prev_mer)-1)*100:+.1f}% recent")
-snap4.metric("P1 leaks", f"{p1_count}", delta="needs owner action", delta_color="inverse")
+st.markdown(f"""
+<div class="story-shell">
+  <div class="story-header">
+    <div>
+      <p class="kpi-label" style="margin:0 0 6px">{RETAILER_NAME} operating story</p>
+      <p class="story-title">Revenue is leaking after the click.</p>
+      <p class="story-copy">The story is simple: paid demand looks productive, fulfillment decides the customer experience, and weak repeat purchase keeps acquisition from compounding.</p>
+    </div>
+  </div>
+  <div class="story-rail">
+    <div class="story-beat" style="--beat-color:#7c6bff">
+      <p class="story-label">Spend</p>
+      <p class="story-number">{avg_mer:.2f}x MER</p>
+      <p class="story-line">R${total_spend/1e6:.1f}M in media spend. Platforms claim +{overclaim_pct:.0f}% above Shopify truth.</p>
+    </div>
+    <div class="story-arrow">→</div>
+    <div class="story-beat" style="--beat-color:#22d3a0">
+      <p class="story-label">Delivery</p>
+      <p class="story-number">{late_context}</p>
+      <p class="story-line">{f'{_fl_orders_k:.0f}k orders, {_fl_days:.1f} day average delivery.' if _fl_on_time else 'Build Olist files for fulfillment coverage.'}</p>
+    </div>
+    <div class="story-arrow">→</div>
+    <div class="story-beat" style="--beat-color:#f5c542">
+      <p class="story-label">Repeat</p>
+      <p class="story-number">{repeat_context}</p>
+      <p class="story-line">{f'{_ret_customers_k:.0f}k customers, R${_ret_ltv:.0f} average 180d LTV.' if _ret_repeat else 'Build Olist files for cohort coverage.'}</p>
+    </div>
+  </div>
+  <div class="story-action">
+    <div>
+      <p class="story-action-title">Next move: {top_leak}</p>
+      <p class="story-action-copy">{top_owner} owns {top_impact} of estimated impact. {top_action}</p>
+    </div>
+    <div class="story-pill">{p1_count} P1 leaks</div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
 
-with st.expander("More period metrics"):
-    more1, more2, more3, more4 = st.columns(4)
-    more1.metric("Platforms Claim", f"R${total_claimed/1e6:.1f}M", delta=f"+{overclaim_pct:.0f}% vs reality", delta_color="inverse")
-    more2.metric("Analytics gap", f"−{avg_ga4_miss:.0f}%", delta="revenue missed", delta_color="inverse")
-    more3.metric("Fulfillment", late_context)
-    more4.metric("Retention", repeat_context)
-    st.caption(f"{len(wf)} synthetic weeks analysed. Real Olist tabs use the generated CSV files.")
+ai_status = "Live key provided" if api_key else "Demo mode"
+cta_left, cta_right = st.columns([0.26, 0.74])
+with cta_left:
+    top_generate_btn = st.button("Generate client brief", type="primary", use_container_width=True, key="top_ai_generate")
+with cta_right:
+    st.caption(f"AI Brief Studio · {ai_status} · live model gpt-oss-20b · demo fallback remains available")
+top_brief_placeholder = st.empty()
+if top_generate_btn:
+    generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
 
-overview_left, overview_right = st.columns([1.35, 0.85])
-
-with overview_left:
-    st.markdown("### This Week's Leaks")
-    st.markdown(
-        '<p class="kpi-label">Top 3 owner-ready actions · impact-ranked</p>',
-        unsafe_allow_html=True,
-    )
+with st.expander("Supporting action queue and source coverage"):
     if action_queue_display.empty:
         st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
     else:
-        queue_columns = {
-            "Priority": st.column_config.TextColumn("Priority", width="small"),
-            "Leak": st.column_config.TextColumn("Leak", width="medium"),
-            "Impact": st.column_config.TextColumn("Impact", width="small"),
-            "Owner": st.column_config.TextColumn("Owner", width="small"),
-            "Recommended action": st.column_config.TextColumn("Recommended action", width="large"),
-            "Confidence": st.column_config.TextColumn("Confidence", width="small"),
-            "Source": st.column_config.TextColumn("Source", width="medium"),
-        }
+        support_queue = action_queue_display[["Priority", "Leak", "Impact", "Owner", "Confidence", "Source"]].head(6)
+        st.markdown("**Action queue**")
         st.dataframe(
-            action_queue_display.head(3),
+            support_queue,
             use_container_width=True,
             hide_index=True,
-            height=184,
-            column_config=queue_columns,
         )
-        with st.expander("View full action queue"):
-            st.dataframe(
-                action_queue_display,
-                use_container_width=True,
-                hide_index=True,
-                column_config=queue_columns,
-            )
-
-with overview_right:
-    ai_status = "Live key provided" if api_key else "Demo mode"
-    st.markdown(f"""
-<div class="ai-hero" style="margin-top:0">
-  <p class="brand-subtitle" style="color:#7c6bff;margin:0 0 6px">AI Brief Studio</p>
-  <p class="ai-hero-title">Brief the client from the current queue</p>
-  <p class="ai-status" style="margin:0">
-    <strong>Status:</strong> {ai_status}. Live generation uses OpenAI's open-weight <code>gpt-oss-20b</code> model through the Responses API.
-  </p>
-</div>
-""", unsafe_allow_html=True)
-    top_generate_btn = st.button("Generate AI Brief", type="primary", use_container_width=True, key="top_ai_generate")
-    top_brief_placeholder = st.empty()
-    if top_generate_btn:
-        generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
-    else:
-        st.caption("Use the button for a live brief, or open the AI Brief tab for the demo output and full prompt.")
-        with st.expander("Preview demo brief"):
-            st.markdown(
-                render_brief_box(DEMO_BRIEF, 0.74, "Quota-safe preview:"),
-                unsafe_allow_html=True,
-            )
-
-# ── Funnel / flow navigator ────────────────────────────────────────────────
-with st.expander("Operating flow: attribution → fulfillment → retention"):
-    st.markdown(f"""
-<div style="display:flex;align-items:stretch;gap:0;margin:8px 0 4px;border-radius:10px;overflow:hidden">
-
-  <div style="flex:1;background:#12122a;border-top:3px solid #7c6bff;padding:14px 18px">
-    <p style="color:#7c6bff;font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 6px;font-family:monospace">01 · Attribution</p>
-    <p style="color:#eeeeff;font-size:14px;font-weight:600;margin:0 0 2px">
-      R${total_spend/1e6:.1f}M spent → R${total_rev/1e6:.1f}M revenue
-    </p>
-    <p style="color:#7c6bff;font-size:22px;font-weight:800;margin:4px 0">MER {avg_mer:.2f}x</p>
-    <p style="color:#6060a0;font-size:11px;margin:0">Platforms overclaim +{overclaim_pct:.0f}% · GA4 misses {avg_ga4_miss:.0f}%</p>
-  </div>
-
-  <div style="display:flex;align-items:center;background:#0b0b14;padding:0 10px">
-    <span style="color:#2e2e4a;font-size:24px;line-height:1">▶</span>
-  </div>
-
-  <div style="flex:1;background:#0d1a14;border-top:3px solid #22d3a0;padding:14px 18px">
-    <p style="color:#22d3a0;font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 6px;font-family:monospace">02 · Fulfillment</p>
-    <p style="color:#eeeeff;font-size:14px;font-weight:600;margin:0 0 2px">Revenue paid → goods delivered</p>
-    {_fulfill_html}
-  </div>
-
-  <div style="display:flex;align-items:center;background:#0b0b14;padding:0 10px">
-    <span style="color:#2e2e4a;font-size:24px;line-height:1">▶</span>
-  </div>
-
-  <div style="flex:1;background:#1a1500;border-top:3px solid #f5c542;padding:14px 18px">
-    <p style="color:#f5c542;font-size:9px;letter-spacing:.18em;text-transform:uppercase;margin:0 0 6px;font-family:monospace">03 · Retention</p>
-    <p style="color:#eeeeff;font-size:14px;font-weight:600;margin:0 0 2px">Delivered → customer comes back</p>
-    {_retain_html}
-  </div>
-
-</div>
-""", unsafe_allow_html=True)
-
-with st.expander("Data trust and source coverage"):
     st.markdown(
         "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
     )

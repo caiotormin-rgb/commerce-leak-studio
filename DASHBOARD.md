@@ -24,29 +24,20 @@
 - OpenAI API key — text input used by the top AI panel and AI Brief tab
 - Quota-safe demo-mode note for the AI Brief Studio
 
-### Executive snapshot (top of every page, 4 columns)
-| Metric | Source | Notes |
+### Home story
+One editorial story spine replaces the boxed KPI strip and separate flow banner. It pulls live numbers at render time.
+
+| Beat | Color | Key metric shown |
 |---|---|---|
-| Revenue | `wf["shopify_revenue"].sum()` | Filtered by period |
-| Spend | `wf["total_spend"].sum()` | |
-| MER | Revenue / Spend | delta = recent 5-week change |
-| P1 leaks | action queue priority count | owner-action signal |
+| Spend | `#7c6bff` indigo | MER · spend · platform overclaim |
+| Delivery | `#22d3a0` emerald | On-time rate · orders · avg days |
+| Repeat | `#f5c542` amber | 180d repeat rate · customers · LTV |
+| Next move | neutral | top action queue leak, owner, impact |
 
-Platforms claim, GA4 gap, fulfillment, retention, and weeks analysed sit in a secondary expander.
+Fallback text appears inline when real data files are absent.
 
-### Funnel / flow banner
-Expandable operating-flow panel with three connected stages. Pulls live numbers at render time.
-
-| Panel | Color | Key metric shown |
-|---|---|---|
-| 01 · Attribution | `#7c6bff` indigo | Spend → Revenue · MER · overclaim % |
-| 02 · Fulfillment | `#22d3a0` emerald | On-time rate · orders · avg days |
-| 03 · Retention | `#f5c542` amber | 180d repeat rate · customers · LTV |
-
-Fallback text if real data files are absent ("Run build script for live data").
-
-### This Week's Leaks
-Top-level action queue beside the AI Brief Studio and above the tabs. Only the top three actions are visible by default; the full queue is expandable.
+### Supporting action queue
+Collapsed by default below the story. The visible homepage shows only the top leak and next move.
 
 | Column | Meaning |
 |---|---|
@@ -61,16 +52,16 @@ Top-level action queue beside the AI Brief Studio and above the tabs. Only the t
 Includes platform overclaim, late delivery exposure, low repeat purchase, chargeback risk, installment cancellation risk, and seller quality drag.
 
 ### Data trust
-Expandable source coverage table showing which synthetic and real generated datasets are available and when the real files were last built.
+Source coverage table lives in the same supporting expander as the action queue.
 
 ### AI Brief Studio
-Prominent panel beside the action queue and above the tabs.
+Single primary CTA below the story and above the tabs.
 
 | Element | Detail |
 |---|---|
-| Button | Generate AI Brief |
+| Button | Generate client brief |
 | Live mode | Streams from OpenAI Responses API using `gpt-oss-20b` and the dashboard prompt |
-| Demo mode | Keeps a polished brief preview available without API usage |
+| Demo mode | Full polished brief preview remains in the AI Brief tab |
 | Quota mode | Catches quota, rate-limit, and billing errors and falls back to demo output |
 
 ---

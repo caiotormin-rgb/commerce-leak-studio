@@ -38,13 +38,14 @@ Seller quality, revenue concentration, and worst-rated seller table.
 **Tab 9 — Chargeback Risk**
 Three-signal chargeback proxy model, monthly risk trend, and category revenue at risk.
 
-**Top-level — This Week's Leaks**
-Compact top-three action queue ranking attribution, fulfillment, retention,
-payment, chargeback, and seller-quality leaks by estimated impact. The full
-queue sits behind an expander.
+**Top-level — Home story**
+An editorial story spine shows the operating flow from spend to delivery to
+repeat purchase, then names the single highest-priority next move. Supporting
+actions and source coverage sit behind an expander.
 
 **Top-level — AI Brief Studio**
-Prominent AI panel that turns the action queue into an executive commerce brief.
+Primary AI button that turns the current story and action queue into an executive
+commerce brief.
 Enter an OpenAI API key in the sidebar to generate live with `gpt-oss-20b`.
 If quota is unavailable, the app falls back to a polished demo brief instead of
 blocking the experience.
@@ -79,9 +80,9 @@ are synthetic to demonstrate common platform overclaiming issues:
 - GA4 missing ~22% of orders (client-side tracking gaps, iOS ITP, ad blockers)
 - March 2017 cohort: low retention from broad Meta targeting
 
-The top-level "This Week's Leaks" queue and AI Brief Studio turn dashboard signals
-into owner-ready actions across growth, fulfillment, retention, payment risk,
-chargeback risk, and seller quality.
+The top-level story and AI Brief Studio turn dashboard signals into owner-ready
+actions across growth, fulfillment, retention, payment risk, chargeback risk,
+and seller quality.
 
 No real customer data. Safe to share publicly.
 

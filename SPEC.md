@@ -23,29 +23,18 @@
 | Period slider | Filters synthetic weekly data only. Real Olist tabs ignore it. |
 | AI Brief Studio | OpenAI key field + quota-safe demo-mode note. Used by top AI panel and AI Brief tab. Live model: `gpt-oss-20b`. |
 
-### Executive snapshot — 4 columns
-| # | Label | Formula | Source |
+### Home story — narrative spine
+Replaces the prior KPI strip and boxed flow. Renders as one editorial story block above the tabs.
+
+| Beat | Accent | Primary metric | Supporting line |
 |---|---|---|---|
-| 1 | Revenue | `sum(shopify_revenue)` | `wf` synthetic |
-| 2 | Spend | `sum(total_spend)` | `wf` synthetic |
-| 3 | MER | `total_rev / total_spend` · delta = recent 5-week change | `wf` |
-| 4 | P1 leaks | count of action queue rows where `Priority == "P1"` | action queue |
+| Spend | `#7c6bff` | `MER {x:.2f}x` | media spend, revenue, platform overclaim |
+| Delivery | `#22d3a0` | `{on_time:.1f}% on time` | order volume and average delivery days |
+| Repeat | `#f5c542` | `{repeat:.1f}% repeat` | customer count and 180d LTV |
+| Next move | neutral | top action queue leak | owner, impact, recommended action |
 
-Secondary metrics move into an expander: platforms claim, analytics gap, fulfillment, retention, and weeks analysed.
-
-### Funnel / flow banner — 3 panels + 2 arrows
-Renders inside an `Operating flow` expander above the tab bar. Numbers are live from data at render time.
-
-| Panel | Border | Label | Primary metric | Secondary line |
-|---|---|---|---|---|
-| 01 · Attribution | `#7c6bff` | "Is your spend working?" | `MER {x:.2f}x` | `R${spend}M spent → R${rev}M revenue · overclaim +{x}%` |
-| 02 · Fulfillment | `#22d3a0` | "Are orders arriving on time?" | `{on_time:.1f}% on time` | `{orders}k orders · avg {days:.1f} days` |
-| 03 · Retention | `#f5c542` | "Are customers coming back?" | `{repeat:.1f}% repeat` | `{customers}k customers · R${ltv:.0f} LTV` |
-
-Fallback text shown if `data/` files are missing.
-
-### This Week's Leaks — action queue
-Renders below the executive snapshot and above the tab bar. It converts dashboard signals into an owner-ready operating queue. The top three actions are visible by default; the full queue is inside an expander.
+### Supporting action queue
+Hidden inside "Supporting action queue and source coverage". It converts dashboard signals into an owner-ready operating queue.
 
 | Column | Detail |
 |---|---|
@@ -65,19 +54,19 @@ Current queue inputs:
 - Payment cancellation risk: highest installment cancellation bucket × average value
 - Seller quality drag: highest-revenue seller with ≥50 orders and low review score
 
-### Data trust expander
-Shows source coverage and build freshness for synthetic weekly data plus all generated `data/*.csv` files used by the real-data tabs.
+### Data trust
+Shown inside the same supporting expander as the action queue.
 
-### AI Brief Studio — prominent panel
-Renders beside the action queue and above the tab bar.
+### AI Brief Studio — primary CTA
+Renders as a single primary button under the home story and above the tab bar.
 
 | Element | Detail |
 |---|---|
 | Status | `Live key provided` if sidebar key exists, else `Demo mode` |
-| Button | `Generate AI Brief` primary button |
+| Button | `Generate client brief` primary button |
 | Live behavior | Calls OpenAI Responses API with the same prompt used in Tab 9 and `model="gpt-oss-20b"` |
 | Quota behavior | If OpenAI returns quota / rate-limit / billing errors, render quota-safe demo brief instead of stopping at the error |
-| Default behavior | Shows a compact note; demo preview is tucked into an expander and shown fully in the AI Brief tab |
+| Default behavior | Keeps homepage quiet; full demo preview stays in the AI Brief tab |
 
 ---
 
