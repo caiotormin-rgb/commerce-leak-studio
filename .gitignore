@@ -1,0 +1,17 @@
+# Raw source CSVs — too large for git, not needed for deployment
+files/
+.DS_Store
+
+# Generated but reproducible — keep data/ (pre-aggregated, ~10 KB)
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# Large binaries
+*.zip
+*.docx
+*.xlsx
+
+# Streamlit local state
+.streamlit/secrets.toml
