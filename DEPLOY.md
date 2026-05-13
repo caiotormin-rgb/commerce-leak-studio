@@ -65,13 +65,13 @@ deploy/godaddy_static/index.html
 To:
 
 ```text
-public_html/retail-demo/index.html
+public_html/retaildemo/index.html
 ```
 
 Then the GoDaddy landing page will live at:
 
 ```text
-https://YOUR_DOMAIN/retail-demo/
+https://YOUR_DOMAIN/retaildemo/
 ```
 
 The `Launch live demo` and `Open Dashboard` links on that page currently point to:
