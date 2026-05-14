@@ -843,17 +843,44 @@ if page == "🤖 Executive Brief":
     if top_generate_btn:
         generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
 
-    with st.expander("Supporting action queue and source coverage"):
-        if action_queue_display.empty:
-            st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
-        else:
-            support_queue = action_queue_display[["Priority", "Leak", "Impact", "Owner", "Confidence", "Source"]].head(6)
-            st.markdown("**Action queue**")
-            st.dataframe(
-                support_queue,
-                use_container_width=True,
-                hide_index=True,
-            )
+    st.markdown("### Action Queue")
+    if action_queue_display.empty:
+        st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
+    else:
+        cards_html = "<div style='display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;'>"
+        for _, row in action_queue_display.head(6).iterrows():
+            owner = row["Owner"]
+            color = "#7c6bff" # default attribution (Acquisition)
+            if "Ops" in owner: color = "#22d3a0" # Fulfillment
+            elif "Retention" in owner: color = "#f5c542" # Repeat
+            elif "Finance" in owner: color = "#ff5566" # Risk
+            
+            cards_html += f"""
+            <div style='background: #0f0f18; border-left: 4px solid {color}; border-radius: 8px; padding: 16px; border-top: 1px solid #1c1c2a; border-right: 1px solid #1c1c2a; border-bottom: 1px solid #1c1c2a;'>
+                <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;'>
+                    <div>
+                        <span style='color: {color}; font-family: monospace; font-size: 11px; font-weight: bold; padding: 2px 6px; background: {color}20; border-radius: 4px; margin-right: 8px;'>{row['Priority']}</span>
+                        <strong style='color: #eeeeff; font-size: 16px;'>{escape(str(row['Leak']))}</strong>
+                    </div>
+                    <div style='text-align: right;'>
+                        <span style='color: #a0a0c0; font-size: 12px; margin-right: 12px;'>Impact:</span>
+                        <strong style='color: #eeeeff; font-size: 16px;'>{row['Impact']}</strong>
+                    </div>
+                </div>
+                <div style='color: #8d8daf; font-size: 14px; line-height: 1.5; margin-bottom: 12px;'>
+                    {escape(str(row['Recommended action']))}
+                </div>
+                <div style='display: flex; gap: 16px; font-size: 11px; color: #6060a0; font-family: monospace; text-transform: uppercase;'>
+                    <span>Owner: <strong style='color: #a0a0c0;'>{escape(str(row['Owner']))}</strong></span>
+                    <span>Confidence: <strong style='color: #a0a0c0;'>{escape(str(row['Confidence']))}</strong></span>
+                    <span>Source: <strong style='color: #a0a0c0;'>{escape(str(row['Source']))}</strong></span>
+                </div>
+            </div>
+            """
+        cards_html += "</div>"
+        st.markdown(cards_html, unsafe_allow_html=True)
+        
+    with st.expander("Source coverage details"):
         st.markdown(
             "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
         )
