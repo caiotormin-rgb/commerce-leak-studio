@@ -295,7 +295,7 @@ PLOT_THEME = dict(
     xaxis=dict(gridcolor="#1c1c2a", zerolinecolor="#1c1c2a"),
     yaxis=dict(gridcolor="#1c1c2a", zerolinecolor="#1c1c2a"),
     legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color="#9090b0")),
-    margin=dict(l=48, r=24, t=52, b=36),
+    margin=dict(l=48, r=24, t=72, b=36),
 )
 
 
