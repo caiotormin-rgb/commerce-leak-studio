@@ -378,11 +378,11 @@ def file_status(filename):
     return f"Ready · {modified}"
 
 
-DEMO_BRIEF = """WHAT HAPPENED: MER held above the recent baseline while the platforms still claimed more revenue than Shopify recorded. Fulfillment remains the clearest customer-experience leak: late orders are concentrated enough to show up in review quality, and 180-day repeat purchase is still too low to let paid acquisition compound.
+DEMO_BRIEF = """WHAT HAPPENED: Ad spend is producing real sales, but the numbers Google and Meta report are inflated — they claim roughly 30% more revenue than Shopify actually recorded. Meanwhile, deliveries are running late often enough that customer ratings are suffering, and most buyers are not coming back for a second purchase.
 
-WHAT IT MEANS: The growth team should not optimize from platform ROAS alone because the claimed revenue pool is inflated. The operating issue is broader than attribution: late delivery suppresses reviews, weak reviews reduce repeat purchase, and risky payment or chargeback segments create finance drag after the order is already won.
+WHAT IT MEANS: The real problem is not how much you're spending on ads — it's what happens after the click. Late deliveries hurt ratings, poor ratings discourage repeat purchases, and without repeat purchases, every new customer you acquire has to pay for itself immediately. The math stops working.
 
-FIRST ACTION: Put the P1 queue into this week's operating meeting: use MER as the paid-spend guardrail, open an SLA recovery queue for late orders after day 3, and assign Retention a 45-day second-purchase flow with a target of moving 180-day repeat toward 5.0%."""
+FIRST ACTION: Three things this week: stop using platform ad dashboards as your source of truth for spend decisions — use total revenue divided by total spend instead. Contact customers whose orders arrived more than three days late before they post a review. And set up a simple follow-up offer for first-time buyers within 45 days, with a goal of getting at least 1 in 20 to come back."""
 
 
 def render_brief_box(text, opacity=1.0, intro=None):
@@ -831,12 +831,17 @@ OPERATIONS CONTEXT:
 PRIORITIZED ACTION QUEUE:
 {action_summary}
 
-Write exactly 3 paragraphs:
-1. WHAT HAPPENED: 2-3 sentences on the key growth, attribution, fulfillment, retention, and risk numbers.
-2. WHAT IT MEANS: 2-3 sentences connecting the biggest leaks to profit or customer experience.
-3. FIRST ACTION: One specific owner-ready recommendation with a number attached.
+Write exactly 3 paragraphs labeled WHAT HAPPENED, WHAT IT MEANS, and FIRST ACTION.
 
-Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
+Rules:
+- No jargon. Write as if the reader runs the business but is not a data analyst.
+- Never use: MER, ROAS, LTV, cohort, attribution, chargeback, SLA, incremental, or any acronym.
+- Say "ad spend" not "media spend". Say "came back to buy again" not "repeat purchase rate". Say "what Shopify recorded" not "ground truth". Say "how much you make per dollar of ads" not "MER".
+- WHAT HAPPENED: 2-3 sentences on what the numbers showed this week — revenue, ad performance, delivery, and whether customers are returning.
+- WHAT IT MEANS: 2-3 sentences on what is actually causing the problem and why it matters in plain business terms.
+- FIRST ACTION: One specific, named action with a number. Say who should do it and by when.
+
+Tone: direct, clear, no filler. A busy founder should understand every sentence.
 """
 
 
