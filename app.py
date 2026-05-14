@@ -916,57 +916,80 @@ if page == "🤖 Executive Brief":
     </div>
     """, unsafe_allow_html=True)
 
-    cta_left, cta_mid, cta_right = st.columns([0.22, 0.16, 0.62])
-    with cta_left:
-        top_generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="top_ai_generate")
-    with cta_mid:
-        top_demo_btn = st.button("Show demo", use_container_width=True, key="top_ai_demo")
-    with cta_right:
-        st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
-    top_brief_placeholder = st.empty()
-    if top_generate_btn:
-        generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
-    elif top_demo_btn:
-        top_brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
+    # ── Opportunities ─────────────────────────────────────────────────────────
+    st.markdown("### Opportunities")
+    st.markdown('<p style="color:#8d8daf;font-size:14px;margin:-8px 0 24px">Ranked by estimated revenue impact. Each one has a named owner and a specific action — not a suggestion to investigate.</p>', unsafe_allow_html=True)
 
-    st.markdown("### Where the cash is")
-    st.markdown('<p style="color:#8d8daf;font-size:13px;margin:-8px 0 16px">Ranked by estimated impact. Each item is an owner-ready action, not a recommendation to investigate.</p>', unsafe_allow_html=True)
     if action_queue_display.empty:
-        st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
+        st.info("Run `python scripts/build_olist_data.py` to populate the opportunity queue.", icon="⚙️")
     else:
-        cards_html = "<div style='display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px;'>"
-        for _, row in action_queue_display.head(6).iterrows():
-            owner = row["Owner"]
-            color = "#7c6bff" # default attribution (Acquisition)
-            if "Ops" in owner: color = "#22d3a0" # Fulfillment
-            elif "Retention" in owner: color = "#f5c542" # Repeat
-            elif "Finance" in owner: color = "#ff5566" # Risk
-            
-            cards_html += f"""
-<div style='background: #0f0f18; border-left: 4px solid {color}; border-radius: 8px; padding: 16px; border-top: 1px solid #1c1c2a; border-right: 1px solid #1c1c2a; border-bottom: 1px solid #1c1c2a;'>
-    <div style='display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;'>
-        <div>
-            <span style='color: {color}; font-family: monospace; font-size: 11px; font-weight: bold; padding: 2px 6px; background: {color}20; border-radius: 4px; margin-right: 8px;'>{row['Priority']}</span>
-            <strong style='color: #eeeeff; font-size: 16px;'>{escape(str(row['Leak']))}</strong>
-        </div>
-        <div style='text-align: right;'>
-            <span style='color: #a0a0c0; font-size: 12px; margin-right: 12px;'>Impact:</span>
-            <strong style='color: #eeeeff; font-size: 16px;'>{row['Impact']}</strong>
-        </div>
+        total_impact = action_queue["Impact"].sum()
+        p1_items = action_queue[action_queue["Priority"] == "P1"]
+        p1_impact = p1_items["Impact"].sum()
+
+        roll_cols = st.columns(3)
+        roll_cols[0].metric("Total identified opportunity", brl(total_impact))
+        roll_cols[1].metric("Urgent (act this week)", brl(p1_impact), f"{len(p1_items)} items")
+        roll_cols[2].metric("Items in queue", str(len(action_queue_display)))
+
+        st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
+
+        for _, row in action_queue.head(6).iterrows():
+            owner = str(row["Owner"])
+            leak  = escape(str(row["Leak"]))
+            action_text = escape(str(row["Recommended action"]))
+            confidence  = escape(str(row["Confidence"]))
+            source      = escape(str(row["Source"]))
+            priority    = str(row["Priority"])
+            impact_val  = brl(row["Impact"])
+
+            color = "#7c6bff"
+            if "Ops" in owner:       color = "#22d3a0"
+            elif "Retention" in owner: color = "#f5c542"
+            elif "Finance" in owner:   color = "#ff5566"
+
+            priority_label = "Act this week" if priority == "P1" else "Act this month"
+
+            st.markdown(f"""
+<div style="background:#0d0d1a;border:1px solid #1c1c2a;border-left:5px solid {color};border-radius:10px;padding:24px 28px;margin-bottom:16px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;flex-wrap:wrap;gap:12px">
+    <div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="background:{color}20;color:{color};border:1px solid {color}44;border-radius:4px;padding:2px 10px;font-family:monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase">{priority_label}</span>
+        <span style="color:#3a3a5a;font-size:11px;font-family:monospace">{source}</span>
+      </div>
+      <p style="color:#eeeeff;font-size:20px;font-weight:800;margin:0;line-height:1.2">{leak}</p>
     </div>
-    <div style='color: #8d8daf; font-size: 14px; line-height: 1.5; margin-bottom: 12px;'>
-        {escape(str(row['Recommended action']))}
+    <div style="text-align:right;flex-shrink:0">
+      <p style="font-family:monospace;font-size:10px;color:#5a5a7a;text-transform:uppercase;letter-spacing:.1em;margin:0 0 4px">Estimated impact</p>
+      <p style="color:{color};font-size:32px;font-weight:900;margin:0;line-height:1">{impact_val}</p>
     </div>
-    <div style='display: flex; gap: 16px; font-size: 11px; color: #6060a0; font-family: monospace; text-transform: uppercase;'>
-        <span>Owner: <strong style='color: #a0a0c0;'>{escape(str(row['Owner']))}</strong></span>
-        <span>Confidence: <strong style='color: #a0a0c0;'>{escape(str(row['Confidence']))}</strong></span>
-        <span>Source: <strong style='color: #a0a0c0;'>{escape(str(row['Source']))}</strong></span>
-    </div>
+  </div>
+  <p style="color:#b0b0d0;font-size:14px;line-height:1.7;margin:0 0 16px;max-width:780px">{action_text}</p>
+  <div style="display:flex;gap:24px;padding-top:14px;border-top:1px solid #1c1c2a;font-size:11px;font-family:monospace;flex-wrap:wrap">
+    <span style="color:#5a5a7a">Owner: <strong style="color:#9090b8">{escape(owner)}</strong></span>
+    <span style="color:#5a5a7a">Confidence: <strong style="color:#9090b8">{confidence}</strong></span>
+  </div>
 </div>
-"""
-        cards_html += "</div>"
-        st.markdown(cards_html, unsafe_allow_html=True)
-        
+""", unsafe_allow_html=True)
+
+    st.divider()
+
+    # ── AI Brief ──────────────────────────────────────────────────────────────
+    with st.expander("AI-generated brief", expanded=False):
+        cta_left, cta_mid, cta_right = st.columns([0.22, 0.16, 0.62])
+        with cta_left:
+            top_generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="top_ai_generate")
+        with cta_mid:
+            top_demo_btn = st.button("Show demo", use_container_width=True, key="top_ai_demo")
+        with cta_right:
+            st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
+        top_brief_placeholder = st.empty()
+        if top_generate_btn:
+            generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
+        elif top_demo_btn:
+            top_brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
+
     st.divider()
 
 
