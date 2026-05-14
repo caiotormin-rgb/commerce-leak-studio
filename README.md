@@ -1,9 +1,9 @@
-# Retail Pulse
+# Margin Intelligence Report
 
 A working ecommerce operating analytics demo modeled on the real
 [Olist Brazilian ecommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).
 
-Packaged as a Torm Data Co. product for a mock retailer, **Luma & Co.**,
+Packaged as a Torm Data Co. product for a mock retailer, **Casa Viva**,
 a Brazilian home, gifts, and lifestyle marketplace.
 
 **Core thesis:** find the profit leaks hiding between marketing, fulfillment, and retention — then name a specific owner and action for each one.

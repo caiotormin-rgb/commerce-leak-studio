@@ -5,8 +5,8 @@ import pandas as pd
 import streamlit as st
 
 CONSULTANCY_NAME = "Torm Data Co."
-PRODUCT_NAME = "Retail Pulse"
-RETAILER_NAME = "Luma & Co."
+PRODUCT_NAME = "Margin Intelligence Report"
+RETAILER_NAME = "Casa Viva"
 RETAILER_CATEGORY = "Brazilian home, gifts, and lifestyle marketplace"
 BRAND_PROMISE = "Real signals. No platform spin. Owner-ready actions."
 

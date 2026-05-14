@@ -1,4 +1,5 @@
-# Retail Pulse Spec
+# Margin Intelligence Report Spec
+
 **File:** `app.py` · **Build:** `python scripts/build_olist_data.py` · **Run:** `streamlit run app.py`
 
 ---
@@ -8,18 +9,18 @@
 | Element | Detail |
 |---|---|
 | Consultancy | `Torm Data Co.` |
-| Product | `Retail Pulse` |
-| Mock retailer | `Luma & Co.` |
+| Product | `Margin Intelligence Report` |
+| Mock retailer | `Casa Viva` |
 | Retailer category | Brazilian home, gifts, and lifestyle marketplace |
 | Promise | "Find the profit leaks hiding between marketing, fulfillment, and retention." |
-| Logo system | Code-native `L` mark in emerald / amber / indigo, paired with Luma & Co. wordmark |
+| Logo system | Code-native `C` mark in emerald / amber / indigo, paired with Casa Viva wordmark |
 
 ## Global — always visible
 
 ### Sidebar
 | Element | Detail |
 |---|---|
-| Brand card | Luma & Co. mock retailer identity + product byline |
+| Brand card | Casa Viva mock retailer identity + product byline |
 | Period slider | Filters synthetic weekly data only. Real Olist tabs ignore it. |
 | AI Brief Studio | OpenAI key field + quota-safe demo-mode note. Used by top AI panel and AI Brief tab. Live model: `gpt-oss-20b`. |
 

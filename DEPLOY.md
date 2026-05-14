@@ -1,4 +1,4 @@
-# Deploy Retail Pulse
+# Deploy Margin Intelligence Report
 
 This project has two deployment surfaces:
 
@@ -28,7 +28,7 @@ After GitHub auth is working:
 ```bash
 git init
 git add .
-git commit -m "Package Retail Pulse dashboard"
+git commit -m "Package Margin Intelligence Report dashboard"
 gh repo create commerce-leak-studio --private --source=. --remote=origin --push
 ```
 
