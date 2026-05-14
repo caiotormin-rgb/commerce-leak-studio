@@ -913,15 +913,18 @@ if page == "🤖 Executive Brief":
     </div>
     """, unsafe_allow_html=True)
 
-    ai_status = "Live key provided" if api_key else "Demo mode"
-    cta_left, cta_right = st.columns([0.26, 0.74])
+    cta_left, cta_mid, cta_right = st.columns([0.22, 0.16, 0.62])
     with cta_left:
-        top_generate_btn = st.button("Generate client brief", type="primary", use_container_width=True, key="top_ai_generate")
+        top_generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="top_ai_generate")
+    with cta_mid:
+        top_demo_btn = st.button("Show demo", use_container_width=True, key="top_ai_demo")
     with cta_right:
-        st.caption(f"AI Brief Studio · {ai_status} · live model gpt-4o-mini · demo fallback remains available")
+        st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
     top_brief_placeholder = st.empty()
     if top_generate_btn:
         generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
+    elif top_demo_btn:
+        top_brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
 
     st.markdown("### Where the cash is")
     st.markdown('<p style="color:#8d8daf;font-size:13px;margin:-8px 0 16px">Ranked by estimated impact. Each item is an owner-ready action, not a recommendation to investigate.</p>', unsafe_allow_html=True)
@@ -2319,19 +2322,20 @@ Turns the action queue and dashboard numbers into a client-ready weekly brief �
 
     st.divider()
 
-    col_gen1, col_gen2 = st.columns([1, 3])
+    col_gen1, col_gen2, col_gen3 = st.columns([0.22, 0.16, 0.62])
     with col_gen1:
-        generate_btn = st.button("Generate Live Brief", type="primary", use_container_width=True, key="tab_ai_generate")
+        generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="tab_ai_generate")
+    with col_gen2:
+        demo_btn = st.button("Show demo", use_container_width=True, key="tab_ai_demo")
+    with col_gen3:
+        st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
 
     brief_placeholder = st.empty()
 
     if generate_btn:
         generate_openai_brief(api_key, prompt_context, brief_placeholder)
-    else:
-        brief_placeholder.markdown(
-            render_brief_box(DEMO_BRIEF, 0.68, "Demo output shown while live AI is unavailable or quota-limited:"),
-            unsafe_allow_html=True,
-        )
+    elif demo_btn:
+        brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
 
     st.divider()
 
