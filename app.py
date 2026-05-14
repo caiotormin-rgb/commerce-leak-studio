@@ -59,10 +59,10 @@ st.markdown("""
   /* Column gap — gives charts breathing room */
   [data-testid="stHorizontalBlock"] { gap: 28px !important; }
 
-  /* Section headings — breathing room on every level */
-  h2 { margin-top: 32px !important; margin-bottom: 20px !important; }
-  h3 { margin-top: 36px !important; margin-bottom: 20px !important; }
-  h4 { margin-top: 28px !important; margin-bottom: 14px !important; }
+  /* Section headings */
+  h2 { margin-top: 8px !important; margin-bottom: 12px !important; }
+  h3 { margin-top: 8px !important; margin-bottom: 12px !important; }
+  h4 { margin-top: 16px !important; margin-bottom: 10px !important; }
 
   /* kpi-label captions that precede charts or sections */
   .kpi-label { margin-bottom: 10px !important; }
@@ -295,7 +295,7 @@ PLOT_THEME = dict(
     xaxis=dict(gridcolor="#1c1c2a", zerolinecolor="#1c1c2a"),
     yaxis=dict(gridcolor="#1c1c2a", zerolinecolor="#1c1c2a"),
     legend=dict(bgcolor="rgba(0,0,0,0)", font=dict(color="#9090b0")),
-    margin=dict(l=48, r=24, t=36, b=36),
+    margin=dict(l=48, r=24, t=52, b=36),
 )
 
 
