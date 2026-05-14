@@ -764,6 +764,19 @@ Write exactly 3 paragraphs:
 Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
 """
 
+# ── Navigation ─────────────────────────────────────────────────────────────
+page = st.sidebar.radio("Navigation", [
+    "🤖 Executive Brief",
+    "📊 Sales",
+    "📅 Demand",
+    "🟣 Spend",
+    "🟡 Customers",
+    "🟢 Delivery",
+    "💳 Payments",
+    "🏪 Sellers",
+    "🚨 Risk",
+])
+
 if page == "🤖 Executive Brief":
     # ── Homepage story ─────────────────────────────────────────────────────────
     p1_count = int((action_queue["Priority"] == "P1").sum()) if not action_queue.empty else 0
@@ -847,18 +860,6 @@ if page == "🤖 Executive Brief":
 
     st.divider()
 
-# ── Navigation ─────────────────────────────────────────────────────────────
-page = st.sidebar.radio("Navigation", [
-    "🤖 Executive Brief",
-    "📊 Sales",
-    "📅 Demand",
-    "🟣 Spend",
-    "🟡 Customers",
-    "🟢 Delivery",
-    "💳 Payments",
-    "🏪 Sellers",
-    "🚨 Risk",
-])
 
 
 # ═══════════════════════════════════════════════════════════════════════════
