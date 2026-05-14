@@ -465,6 +465,8 @@ rv_monthly         = _real("reviews_monthly.csv")
 rv_by_category     = _real("reviews_by_category.csv")
 pay_by_type        = _real("payments_by_type.csv")
 pay_installments   = _real("payments_installments.csv")
+pay_by_category    = _real("payments_by_category.csv")
+pay_by_state       = _real("payments_by_state.csv")
 seller_perf        = _real("seller_performance.csv")
 seller_conc        = _real("seller_concentration.csv")
 cohorts_real       = _real("cohorts_real.csv")
@@ -1870,6 +1872,121 @@ if page == "💳 Payments":
 in the dataset. High-installment boleto orders carry dual risk: payment may not settle, and the
 customer is committed to a long repayment window. These orders warrant additional fulfilment
 verification before shipping.
+</div>
+""", unsafe_allow_html=True)
+
+        # ── By category ───────────────────────────────────────────────────
+        st.divider()
+        st.markdown("### Which categories are most exposed to risky payment methods")
+        st.markdown('<p class="kpi-label">Boleto = higher non-payment risk &nbsp;·&nbsp; 7x+ installments = higher cancellation risk</p>', unsafe_allow_html=True)
+
+        if pay_by_category is not None:
+            pbc = pay_by_category.copy()
+            pbc["risk_score"] = pbc["boleto_pct"] * 0.6 + pbc["high_inst_pct"] * 0.4
+            pbc = pbc[pbc["total_orders"] >= 50].sort_values("risk_score", ascending=True).tail(20)
+            pbc["label"] = pbc["primary_category"].str.replace("_", " ").str.title()
+
+            fig_cat_pay = go.Figure()
+            fig_cat_pay.add_trace(go.Bar(
+                name="Boleto %",
+                y=pbc["label"],
+                x=pbc["boleto_pct"] * 100,
+                orientation="h",
+                marker_color="#ff5566",
+                text=pbc["boleto_pct"].map(lambda v: f"{v*100:.0f}%"),
+                textposition="inside",
+                insidetextanchor="middle",
+            ))
+            fig_cat_pay.add_trace(go.Bar(
+                name="High installments (7x+) %",
+                y=pbc["label"],
+                x=pbc["high_inst_pct"] * 100,
+                orientation="h",
+                marker_color="#f5c542",
+                text=pbc["high_inst_pct"].map(lambda v: f"{v*100:.0f}%"),
+                textposition="inside",
+                insidetextanchor="middle",
+            ))
+            fig_cat_pay.update_layout(**plot_layout(
+                title="Top 20 categories by payment risk exposure",
+                height=540,
+                barmode="stack",
+                xaxis=dict(title="% of orders", ticksuffix="%"),
+                yaxis=dict(title=""),
+                legend=dict(orientation="h", y=1.06),
+            ))
+            st.plotly_chart(fig_cat_pay, use_container_width=True)
+
+            top_boleto = pbc.sort_values("boleto_pct", ascending=False).iloc[0]
+            top_inst   = pbc.sort_values("high_inst_pct", ascending=False).iloc[0]
+            st.markdown(f"""
+<div class="callout callout-amber">
+<strong>{top_boleto["label"]}</strong> has the highest boleto dependency at {top_boleto["boleto_pct"]*100:.0f}% of orders —
+a non-payment rate roughly 2× higher than credit card. &nbsp;
+<strong>{top_inst["label"]}</strong> leads on high-installment exposure at {top_inst["high_inst_pct"]*100:.0f}% of orders in the 7x+ bucket,
+where cancellation risk is measurably elevated.
+</div>
+""", unsafe_allow_html=True)
+
+        # ── By state / region ─────────────────────────────────────────────
+        st.divider()
+        st.markdown("### Payment risk by state")
+        st.markdown('<p class="kpi-label">Which regions lean hardest on boleto and high-installment credit</p>', unsafe_allow_html=True)
+
+        if pay_by_state is not None:
+            STATE_REGION = {
+                "AC":"North","AM":"North","AP":"North","PA":"North","RO":"North","RR":"North","TO":"North",
+                "AL":"Northeast","BA":"Northeast","CE":"Northeast","MA":"Northeast","PB":"Northeast",
+                "PE":"Northeast","PI":"Northeast","RN":"Northeast","SE":"Northeast",
+                "DF":"Center-West","GO":"Center-West","MS":"Center-West","MT":"Center-West",
+                "ES":"Southeast","MG":"Southeast","RJ":"Southeast","SP":"Southeast",
+                "PR":"South","RS":"South","SC":"South",
+            }
+            REGION_COLOR = {
+                "North":"#38bdf8","Northeast":"#f5c542","Center-West":"#9b72cf",
+                "Southeast":"#22d3a0","South":"#7c6bff",
+            }
+            pbs = pay_by_state.copy()
+            pbs["region"] = pbs["state"].map(STATE_REGION).fillna("Other")
+            pbs["region_color"] = pbs["region"].map(REGION_COLOR).fillna("#6060a0")
+            pbs = pbs[pbs["total_orders"] >= 30].sort_values("boleto_pct", ascending=True)
+
+            fig_state_pay = go.Figure()
+            for region, grp in pbs.groupby("region", sort=False):
+                color = REGION_COLOR.get(region, "#6060a0")
+                fig_state_pay.add_trace(go.Bar(
+                    name=region,
+                    y=grp["state"],
+                    x=grp["boleto_pct"] * 100,
+                    orientation="h",
+                    marker_color=color,
+                    customdata=grp[["high_inst_pct", "total_orders", "avg_installments"]].values,
+                    hovertemplate=(
+                        "<b>%{y}</b><br>"
+                        "Boleto: %{x:.1f}%<br>"
+                        "High installments: %{customdata[0]:.1%}<br>"
+                        "Avg installments: %{customdata[2]:.1f}x<br>"
+                        "Orders: %{customdata[1]:,}<extra></extra>"
+                    ),
+                ))
+            fig_state_pay.update_layout(**plot_layout(
+                title="Boleto share by state (coloured by region)",
+                height=560,
+                barmode="overlay",
+                xaxis=dict(title="% orders paid by boleto", ticksuffix="%"),
+                yaxis=dict(title=""),
+                legend=dict(orientation="h", y=1.06),
+            ))
+            st.plotly_chart(fig_state_pay, use_container_width=True)
+
+            top_state = pbs.sort_values("boleto_pct", ascending=False).iloc[0]
+            low_state = pbs.sort_values("boleto_pct", ascending=True).iloc[0]
+            st.markdown(f"""
+<div class="callout">
+<strong>{top_state["state"]} ({STATE_REGION.get(top_state["state"], "")})</strong> has the highest boleto rate at {top_state["boleto_pct"]*100:.0f}% —
+meaning nearly 1 in {int(round(1/top_state["boleto_pct"]))} orders in that state carries elevated settlement risk.
+<strong>{low_state["state"]}</strong> is the least exposed at {low_state["boleto_pct"]*100:.0f}%.
+Regional patterns track infrastructure and banking access: Northeast and North states skew higher on boleto; South and Southeast skew toward credit card.
 </div>
 """, unsafe_allow_html=True)
 

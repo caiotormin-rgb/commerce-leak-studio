@@ -321,8 +321,52 @@ by_installments["_ord"] = by_installments["installment_bucket"].map(
 by_installments = by_installments.sort_values("_ord").drop("_ord", axis=1)
 by_installments.to_csv(OUT / "payments_installments.csv", index=False)
 
+# Payment type mix by product category
+pm_cat = pay_master[pay_master["payment_type"] != "not_defined"].copy()
+pm_cat = pm_cat[pm_cat["primary_category"].notna()]
+cat_totals = pm_cat.groupby("primary_category")["order_id"].count().rename("total_orders")
+cat_pay = (
+    pm_cat.groupby(["primary_category", "payment_type"])["order_id"]
+    .count()
+    .reset_index()
+    .rename(columns={"order_id": "orders"})
+    .merge(cat_totals, on="primary_category")
+)
+cat_pay["pct"] = cat_pay["orders"] / cat_pay["total_orders"]
+# Also attach cancellation rate and avg installments per category
+cat_risk = (
+    pm_cat.groupby("primary_category")
+    .agg(
+        total_orders     = ("order_id",         "count"),
+        cancellation_rate= ("is_cancelled",     "mean"),
+        avg_installments = ("max_installments", "mean"),
+        boleto_pct       = ("payment_type",     lambda x: (x == "boleto").mean()),
+        high_inst_pct    = ("installment_bucket", lambda x: (x.isin(["7–12x", "13–24x"])).mean()),
+    )
+    .reset_index()
+)
+cat_risk.to_csv(OUT / "payments_by_category.csv", index=False)
+
+# Payment type mix by customer state
+state_risk = (
+    pm_cat.groupby("customer_state")
+    .agg(
+        total_orders     = ("order_id",          "count"),
+        cancellation_rate= ("is_cancelled",      "mean"),
+        avg_installments = ("max_installments",  "mean"),
+        boleto_pct       = ("payment_type",      lambda x: (x == "boleto").mean()),
+        high_inst_pct    = ("installment_bucket", lambda x: (x.isin(["7–12x", "13–24x"])).mean()),
+        avg_value        = ("total_payment",     "mean"),
+    )
+    .reset_index()
+    .rename(columns={"customer_state": "state"})
+)
+state_risk.to_csv(OUT / "payments_by_state.csv", index=False)
+
 print(f"  payments_by_type.csv             ({len(by_pay_type)} rows)")
 print(f"  payments_installments.csv        ({len(by_installments)} rows)")
+print(f"  payments_by_category.csv         ({len(cat_risk)} rows)")
+print(f"  payments_by_state.csv            ({len(state_risk)} rows)")
 
 # ── 7. Seller performance ──────────────────────────────────────────────────────
 print("Building seller aggregations…")
