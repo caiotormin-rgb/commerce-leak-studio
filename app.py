@@ -415,29 +415,42 @@ No API key provided. Enter your OpenAI API key in the sidebar, or use demo mode 
             )
             brief_text = ""
             for chunk in stream:
-                delta = chunk.choices[0].delta.content or ""
+                if not chunk.choices:
+                    continue
+                delta = chunk.choices[0].delta.content
                 if delta:
                     brief_text += delta
                     brief_placeholder.markdown(
                         render_brief_box(f"{brief_text}▌"),
                         unsafe_allow_html=True,
                     )
-            brief_placeholder.markdown(render_brief_box(brief_text), unsafe_allow_html=True)
+            if brief_text:
+                brief_placeholder.markdown(render_brief_box(brief_text), unsafe_allow_html=True)
+            else:
+                brief_placeholder.warning("The model returned an empty response. Try again.")
         except Exception as e:
             message = str(e)
-            quota_like = any(token in message.lower() for token in ["quota", "rate limit", "insufficient_quota", "billing"])
-            if quota_like:
-                brief_placeholder.markdown(
-                    """
-<div class="callout callout-amber">
-Live AI is unavailable because the OpenAI account is out of quota or rate-limited. Demo mode is shown below using the same dashboard context.
+            quota_like = any(t in message.lower() for t in ["quota", "rate limit", "insufficient_quota", "billing"])
+            auth_like  = any(t in message.lower() for t in ["invalid_api_key", "incorrect api key", "401"])
+            if auth_like:
+                brief_placeholder.markdown("""
+<div class="callout callout-red">
+<strong>Invalid API key.</strong> Double-check the key in the sidebar — it should start with <code>sk-</code>. You can get a valid key at platform.openai.com/api-keys.
 </div>
-""",
-                    unsafe_allow_html=True,
-                )
-                brief_placeholder.markdown(render_brief_box(DEMO_BRIEF, 0.78, "Quota-safe demo output:"), unsafe_allow_html=True)
+""", unsafe_allow_html=True)
+            elif quota_like:
+                brief_placeholder.markdown("""
+<div class="callout callout-amber">
+<strong>Quota exceeded.</strong> The OpenAI account is out of credits. Demo output shown below.
+</div>
+""", unsafe_allow_html=True)
+                brief_placeholder.markdown(render_brief_box(DEMO_BRIEF, 0.78, "Demo output:"), unsafe_allow_html=True)
             else:
-                brief_placeholder.error(f"API error: {e}")
+                brief_placeholder.markdown(f"""
+<div class="callout callout-red">
+<strong>Error:</strong> {escape(message)}
+</div>
+""", unsafe_allow_html=True)
 
 
 # Pillar palette — applied consistently to every chart in its tab group
