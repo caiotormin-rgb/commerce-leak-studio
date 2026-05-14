@@ -800,9 +800,9 @@ if page == "🤖 Executive Brief":
     <div class="story-shell">
       <div class="story-header">
         <div>
-          <p class="kpi-label" style="margin:0 0 6px">{RETAILER_NAME} operating story</p>
-          <p class="story-title">Revenue is leaking after the click.</p>
-          <p class="story-copy">The story is simple: paid demand looks productive, fulfillment decides the customer experience, and weak repeat purchase keeps acquisition from compounding.</p>
+          <p class="kpi-label" style="margin:0 0 6px">{RETAILER_NAME} · operating story</p>
+          <p class="story-title">You're spending to acquire customers you can't keep.</p>
+          <p class="story-copy">Media spend looks productive. Platforms overclaim. Fulfillment erodes reviews. And most buyers never come back. The leak isn't in the ads — it's in everything after the click.</p>
         </div>
       </div>
       <div class="story-rail">
@@ -844,7 +844,8 @@ if page == "🤖 Executive Brief":
     if top_generate_btn:
         generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
 
-    st.markdown("### Action Queue")
+    st.markdown("### Where the cash is")
+    st.markdown('<p style="color:#8d8daf;font-size:13px;margin:-8px 0 16px">Ranked by estimated impact. Each item is an owner-ready action, not a recommendation to investigate.</p>', unsafe_allow_html=True)
     if action_queue_display.empty:
         st.info("Run `python scripts/build_olist_data.py` to populate the operating queue.", icon="⚙️")
     else:
@@ -881,12 +882,6 @@ if page == "🤖 Executive Brief":
         cards_html += "</div>"
         st.markdown(cards_html, unsafe_allow_html=True)
         
-    with st.expander("Source coverage details"):
-        st.markdown(
-            "Synthetic attribution is used where Olist has no channel data. Operational tabs use pre-aggregated Olist files from `scripts/build_olist_data.py`."
-        )
-        st.dataframe(source_health, use_container_width=True, hide_index=True)
-
     st.divider()
 
 
@@ -2111,12 +2106,10 @@ in these categories is the highest-ROI first step.
 # AI BRIEF
 # ═══════════════════════════════════════════════════════════════════════════
 if page == "🤖 Executive Brief":
-    st.markdown("### Weekly Commerce Brief — AI-Generated")
+    st.markdown("### AI-Generated Client Brief")
     st.markdown("""
 <div class="callout">
-This is the packaged AI layer for Commerce Leak Studio. It turns the queue and
-dashboard metrics into a client-ready weekly brief. Demo mode stays available
-when live API quota is unavailable.
+Turns the action queue and dashboard numbers into a client-ready weekly brief — one click, 600 words, no prep time. Demo mode runs even without a live API key.
 </div>
 """, unsafe_allow_html=True)
 
@@ -2158,179 +2151,162 @@ when live API quota is unavailable.
 if page == "🔮 Agent Prototypes":
     AGENTS = [
         {
-            "name": "Chargeback Triage Agent",
-            "trigger": "Weekly · automated",
-            "owner": "Finance",
+            "name": "Chargeback Triage",
             "color": "#ff5566",
-            "tag": "Risk",
-            "description": "Scans chargeback data, ranks categories by flag_rate delta vs. prior period, and drafts a structured risk report with recommended actions.",
-            "why": "Requires trend reasoning across time — output is a decision brief, not a raw query.",
+            "opportunity": "R$420k",
+            "opportunity_sub": "flagged revenue · at risk each year",
+            "pitch": "Every week, fraud risk shifts across categories and no one notices until reconciliation. This agent catches the drift on Monday morning — before the shipment leaves.",
+            "recovers": "Stops bad orders before they ship. Eliminates manual weekly risk review.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#ff5566;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ CHARGEBACK TRIAGE AGENT · run 2018-09-03 02:00 UTC</div>
-  <div style="color:#6060a0;margin-bottom:16px">Loading chargeback_monthly.csv · chargeback_by_category.csv ··· ok</div>
-  <div style="color:#eeeeff;margin-bottom:4px">── Period delta: Aug → Sep 2018 ──────────────────────</div>
-  <div style="color:#ff5566">▲ Computers Accessories   flag_rate  +2.4pp  →  7.1%   ← ALERT</div>
-  <div style="color:#ff8a4c">▲ Office Furniture        flag_rate  +1.1pp  →  5.5%</div>
-  <div style="color:#f5c542">▲ Telephony               flag_rate  +0.8pp  →  4.9%</div>
-  <div style="color:#6060a0">  Watches Gifts           flag_rate  −0.2pp  →  3.1%</div>
-  <div style="color:#6060a0">  Baby                    flag_rate  −0.5pp  →  4.7%</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Recommended actions ───────────────────────────────</div>
-  <div style="color:#22d3a0">✓  P1  Hold payment release on 2+ risk-signal orders in Computers Accessories</div>
-  <div style="color:#22d3a0">✓  P1  Flag top 3 sellers in category for manual pre-shipment review</div>
-  <div style="color:#f5c542">○  P2  Require evidence capture in Office Furniture before shipment</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Report drafted ────────────────────────────────────</div>
-  <div style="color:#6060a0">→ Sending to: finance@luma.co · ops@luma.co</div>
-  <div style="color:#6060a0">→ Attached: chargeback_brief_2018-09-03.pdf</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 4.2s · next run: Mon 02:00 UTC</div>
+  <div style="color:#ff5566;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ CHARGEBACK TRIAGE · Mon 02:00 UTC</div>
+  <div style="color:#eeeeff;margin-bottom:4px">── Period delta: Aug → Sep ───────────────────────────</div>
+  <div style="color:#ff5566">▲ Computers Accessories   +2.4pp  →  7.1% flag rate   ALERT</div>
+  <div style="color:#ff8a4c">▲ Office Furniture        +1.1pp  →  5.5%</div>
+  <div style="color:#f5c542">▲ Telephony               +0.8pp  →  4.9%</div>
+  <div style="color:#6060a0">  Watches Gifts           −0.2pp  →  3.1%   ok</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Actions drafted ───────────────────────────────────</div>
+  <div style="color:#22d3a0">✓  Hold payment release — Computers Accessories</div>
+  <div style="color:#22d3a0">✓  Flag top 3 sellers for pre-shipment review</div>
+  <div style="color:#f5c542">○  Require evidence capture — Office Furniture</div>
+  <div style="margin:16px 0 0;color:#6060a0">→ Brief sent to finance@luma.co · ops@luma.co</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 4.2s · next run Mon 02:00</div>
 </div>
 """,
         },
         {
-            "name": "Cohort LTV Anomaly Agent",
-            "trigger": "Monthly · after cohort refresh",
-            "owner": "Retention",
+            "name": "LTV Anomaly Detector",
             "color": "#f5c542",
-            "tag": "Retention",
-            "description": "Detects cohorts with steep 30→90-day retention decay, cross-references fulfillment and review data from that period to hypothesize root causes.",
-            "why": "Cross-table causal reasoning — connects a retention drop to a specific operational failure in the same month.",
+            "opportunity": "R$38k+",
+            "opportunity_sub": "per affected cohort · recovered LTV",
+            "pitch": "Retention drops are invisible until they show up in revenue 90 days later. This agent connects the drop to the operational failure that caused it — while there's still time to act.",
+            "recovers": "Catches retention decay early. Tells you why it happened, not just that it did.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#f5c542;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ COHORT LTV ANOMALY AGENT · run 2018-10-01</div>
-  <div style="color:#6060a0;margin-bottom:16px">Scanning cohorts_real.csv · 24 cohorts · ok</div>
-  <div style="color:#eeeeff;margin-bottom:4px">── Decay analysis: 30d → 90d retention ──────────────</div>
-  <div style="color:#6060a0">  Cohort 2017-06  decay  −0.4pp  (normal range)</div>
-  <div style="color:#6060a0">  Cohort 2017-07  decay  −0.5pp  (normal range)</div>
-  <div style="color:#ff5566">▲ Cohort 2017-08  decay  −2.1pp  ← ANOMALY (3.2σ above peers)</div>
-  <div style="color:#6060a0">  Cohort 2017-09  decay  −0.6pp  (normal range)</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Cross-referencing Aug 2017 ────────────────────────</div>
-  <div style="color:#f5c542">  fulfillment_monthly  Aug 2017  on_time_rate: 81.3%  ← lowest in window</div>
-  <div style="color:#f5c542">  reviews_monthly      Aug 2017  avg_score: 3.6        ← below baseline 4.1</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Hypothesis ────────────────────────────────────────</div>
-  <div style="color:#22d3a0">→ Aug 2017 fulfillment breakdown suppressed reviews,</div>
-  <div style="color:#22d3a0">  reducing repeat purchase intent in that cohort.</div>
-  <div style="color:#22d3a0">→ Estimated LTV drag: R$38k across 717 affected customers.</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 6.8s · 1 anomaly flagged</div>
+  <div style="color:#f5c542;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ LTV ANOMALY DETECTOR · monthly run</div>
+  <div style="color:#eeeeff;margin-bottom:4px">── 30d → 90d retention decay ─────────────────────────</div>
+  <div style="color:#6060a0">  Cohort 2017-06   −0.4pp   normal</div>
+  <div style="color:#6060a0">  Cohort 2017-07   −0.5pp   normal</div>
+  <div style="color:#ff5566">▲ Cohort 2017-08   −2.1pp   ANOMALY  (3.2σ)</div>
+  <div style="color:#6060a0">  Cohort 2017-09   −0.6pp   normal</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Aug 2017 cross-reference ──────────────────────────</div>
+  <div style="color:#f5c542">  on_time_rate  81.3%   ← lowest in 12-month window</div>
+  <div style="color:#f5c542">  avg_score      3.6    ← vs 4.1 baseline</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Finding ───────────────────────────────────────────</div>
+  <div style="color:#22d3a0">→ Aug fulfillment breakdown suppressed reviews,</div>
+  <div style="color:#22d3a0">  killing repeat intent for 717 customers.</div>
+  <div style="color:#22d3a0">→ Estimated LTV drag: R$38k recoverable.</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 6.8s · 1 anomaly flagged</div>
 </div>
 """,
         },
         {
-            "name": "Category Reallocation Advisor",
-            "trigger": "On-demand · budget input required",
-            "owner": "Growth",
+            "name": "Budget Reallocation Advisor",
             "color": "#7c6bff",
-            "tag": "Attribution",
-            "description": "Takes a budget constraint as input, synthesizes review scores, on-time rates, chargeback risk, and cohort LTV to rank categories for increased or decreased investment.",
-            "why": "Multi-signal synthesis with constraint satisfaction — replaces analyst hours for quarterly planning.",
+            "opportunity": "R$22k",
+            "opportunity_sub": "incremental LTV · per planning cycle",
+            "pitch": "Quarterly budget planning is a spreadsheet guessing game. This agent reads four signals at once — reviews, delivery, fraud risk, LTV — and tells you exactly where to move the money.",
+            "recovers": "Replaces days of analyst prep. Surfaces the reallocation no one had time to model.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#7c6bff;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ CATEGORY REALLOCATION ADVISOR · Q4 2018 planning</div>
-  <div style="color:#6060a0;margin-bottom:4px">Input: total budget R$480k · constraint: max 30% in any single category</div>
-  <div style="color:#6060a0;margin-bottom:16px">Signals: review_score · on_time_rate · chargeback_risk · ltv_180d</div>
-  <div style="color:#eeeeff;margin-bottom:8px">── Composite score (0–100) ───────────────────────────</div>
-  <div style="color:#22d3a0">▲ INCREASE  Auto               score 84  (+R$62k)  low risk, high LTV</div>
-  <div style="color:#22d3a0">▲ INCREASE  Health Beauty       score 79  (+R$44k)  strong repeat rate</div>
-  <div style="color:#22d3a0">▲ INCREASE  Watches Gifts       score 76  (+R$28k)  high AOV, low chargeback</div>
-  <div style="color:#6060a0">  HOLD      Bed Bath Table      score 61  (±R$0)    stable, no signal</div>
-  <div style="color:#f5c542">▼ REDUCE    Office Furniture    score 41  (−R$18k)  rising chargebacks</div>
-  <div style="color:#ff5566">▼ REDUCE    Computers Acc.     score 28  (−R$40k)  7.1% flag rate, low score</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Trade-off note ────────────────────────────────────</div>
-  <div style="color:#6060a0">Computers Accessories has volume but carries outsized financial risk.</div>
-  <div style="color:#6060a0">Reallocating to Auto/Health adds R$22k projected LTV over 180d.</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 3.1s · recommendation ready for review</div>
+  <div style="color:#7c6bff;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ BUDGET REALLOCATION · Q4 · R$480k total</div>
+  <div style="color:#6060a0;margin-bottom:16px">signals: review score · on-time rate · chargeback risk · ltv 180d</div>
+  <div style="color:#eeeeff;margin-bottom:8px">── Ranked recommendation ─────────────────────────────</div>
+  <div style="color:#22d3a0">▲ INCREASE  Auto            score 84   +R$62k   low risk · high LTV</div>
+  <div style="color:#22d3a0">▲ INCREASE  Health Beauty   score 79   +R$44k   strong repeat</div>
+  <div style="color:#22d3a0">▲ INCREASE  Watches Gifts   score 76   +R$28k   high AOV · low fraud</div>
+  <div style="color:#6060a0">  HOLD      Bed Bath Table  score 61   ±R$0     stable</div>
+  <div style="color:#f5c542">▼ REDUCE    Office Furn.    score 41   −R$18k   chargebacks rising</div>
+  <div style="color:#ff5566">▼ REDUCE    Computers       score 28   −R$40k   7.1% fraud · low score</div>
+  <div style="margin:16px 0 0;color:#22d3a0">→ Net: +R$22k projected LTV uplift over 180 days.</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 3.1s · ready for review</div>
 </div>
 """,
         },
         {
             "name": "Seller Health Monitor",
-            "trigger": "Nightly · automated",
-            "owner": "Marketplace Ops",
             "color": "#22d3a0",
-            "tag": "Fulfillment",
-            "description": "Scans seller performance data, flags sellers whose on-time rate or review score drops below threshold, and drafts context-aware alerts for the ops team.",
-            "why": "Multi-step: diagnose which metric triggered, decide severity, compose a message with specific numbers.",
+            "opportunity": "R$197k",
+            "opportunity_sub": "seller revenue · protected from silent churn",
+            "pitch": "A seller degrading slowly is the hardest leak to see. By the time reviews tank, the damage is done. This agent watches 3,000+ sellers every night and writes the intervention email before you wake up.",
+            "recovers": "Early seller intervention. Auto-drafted alerts mean ops moves in hours, not weeks.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#22d3a0;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ SELLER HEALTH MONITOR · run 2018-09-04 03:00 UTC</div>
-  <div style="color:#6060a0;margin-bottom:16px">Scanning seller_performance.csv · 3095 sellers · ok</div>
-  <div style="color:#eeeeff;margin-bottom:4px">── Threshold breaches (≥50 orders) ──────────────────</div>
-  <div style="color:#ff5566">▲ ALERT   4a3ca931  Bed Bath Table  SP  on_time: 74.1%  score: 3.4  ← both</div>
-  <div style="color:#ff8a4c">▲ WARN    d1bfe1c2  Furniture       SP  on_time: 81.0%  score: 3.8</div>
-  <div style="color:#f5c542">▲ WATCH   9f7b55a4  Telephony       RJ  score: 3.6      on_time ok</div>
-  <div style="color:#6060a0">  OK      fa1c13f2  Watches Gifts   SP  on_time: 89.8%  score: 4.4</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Draft alert for seller 4a3ca931 ───────────────────</div>
-  <div style="color:#6060a0">"Your on-time delivery rate has dropped to 74.1% over the last</div>
-  <div style="color:#6060a0"> 30 days, below the 80% SLA floor. Review scores have fallen to</div>
-  <div style="color:#6060a0"> 3.4. An improvement plan is required within 7 days or listings</div>
-  <div style="color:#6060a0"> will be suppressed. Contact: ops@luma.co"</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 2.9s · 3 alerts queued · 1 critical</div>
+  <div style="color:#22d3a0;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ SELLER HEALTH MONITOR · nightly · 3,095 sellers</div>
+  <div style="color:#eeeeff;margin-bottom:4px">── Breaches flagged ──────────────────────────────────</div>
+  <div style="color:#ff5566">▲ ALERT   4a3ca931  Bed Bath Table  on_time 74%  score 3.4  ← both</div>
+  <div style="color:#ff8a4c">▲ WARN    d1bfe1c2  Furniture       on_time 81%  score 3.8</div>
+  <div style="color:#f5c542">▲ WATCH   9f7b55a4  Telephony       score 3.6    on_time ok</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Alert drafted for 4a3ca931 ────────────────────────</div>
+  <div style="color:#6060a0">"Your on-time rate dropped to 74% — below the 80% SLA floor.</div>
+  <div style="color:#6060a0"> Review score is 3.4. Submit an improvement plan within 7 days</div>
+  <div style="color:#6060a0"> or listings will be suppressed."</div>
+  <div style="margin:16px 0 0;color:#6060a0">→ Queued for ops@luma.co · severity: critical</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 2.9s · 3 alerts queued · 1 critical</div>
 </div>
 """,
         },
         {
             "name": "Review Crisis Responder",
-            "trigger": "Event-driven · 1-star spike detected",
-            "owner": "Ops + CX",
             "color": "#ff8a4c",
-            "tag": "Retention",
-            "description": "Detects month-over-month 1-star rate spikes, cross-references fulfillment lateness as a causal signal, and produces a root-cause summary with escalation recommendation.",
-            "why": "Reactive + causal chain reasoning — demonstrates event-triggered vs. scheduled agentic behavior.",
+            "opportunity": "R$85k",
+            "opportunity_sub": "revenue at risk · per review spike event",
+            "pitch": "A 1-star spike is a signal, not a data point. This agent fires the moment it crosses the threshold, traces it back to late deliveries, and has a recovery plan in your inbox before the team gets to work.",
+            "recovers": "Minutes to diagnosis vs. days. CX outreach starts before more reviews post.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#ff8a4c;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ REVIEW CRISIS RESPONDER · triggered 2018-09-02 09:14 UTC</div>
-  <div style="color:#ff5566;margin-bottom:16px">EVENT: 1-star rate spike detected — Furniture Decor</div>
-  <div style="color:#eeeeff;margin-bottom:4px">── Spike details ─────────────────────────────────────</div>
-  <div style="color:#6060a0">  Aug 2018  1-star rate:  9.1%</div>
-  <div style="color:#ff5566">  Sep 2018  1-star rate: 17.4%   ← +8.3pp  (threshold: +5pp)</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Causal signal check ───────────────────────────────</div>
-  <div style="color:#f5c542">  fulfillment_review_lateness:</div>
-  <div style="color:#f5c542">  Orders 8–14 days late: avg score 1.67  ↑ volume this period</div>
-  <div style="color:#f5c542">  On-time orders:        avg score 4.29  (baseline stable)</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Root-cause summary ────────────────────────────────</div>
-  <div style="color:#22d3a0">→ Fulfillment delays (8–14d late) in Furniture Decor are the</div>
-  <div style="color:#22d3a0">  primary driver. Late orders score 1.67 vs 4.29 on-time.</div>
-  <div style="color:#22d3a0">→ Escalation: open SLA review with logistics partner this week.</div>
-  <div style="color:#22d3a0">→ CX: proactive outreach to affected orders before reviews post.</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 5.1s · escalation drafted · owners notified</div>
+  <div style="color:#ff8a4c;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ REVIEW CRISIS RESPONDER · triggered 09:14 UTC</div>
+  <div style="color:#ff5566;margin-bottom:12px">EVENT: 1-star spike — Furniture Decor · +8.3pp this month</div>
+  <div style="color:#eeeeff;margin-bottom:4px">── Causal trace ──────────────────────────────────────</div>
+  <div style="color:#f5c542">  Orders 8–14 days late   avg score 1.67   ↑ volume</div>
+  <div style="color:#6060a0">  On-time orders          avg score 4.29   stable</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Recovery plan ─────────────────────────────────────</div>
+  <div style="color:#22d3a0">→ Root cause: fulfillment delays. Not product quality.</div>
+  <div style="color:#22d3a0">→ Ops: open SLA review with logistics this week.</div>
+  <div style="color:#22d3a0">→ CX: outreach to affected orders before more reviews post.</div>
+  <div style="margin:16px 0 0;color:#6060a0">→ Escalation drafted · owners notified</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 5.1s · time to action: &lt;10 minutes</div>
 </div>
 """,
         },
         {
             "name": "Geo Expansion Scout",
-            "trigger": "On-demand · quarterly",
-            "owner": "Business Dev",
             "color": "#38bdf8",
-            "tag": "Fulfillment",
-            "description": "Ranks states by untapped potential — high demand with low seller count or poor on-time rate — and generates a market opportunity brief per candidate state.",
-            "why": "Combines geo and seller data to produce a narrative decision artifact, not a dashboard metric.",
+            "opportunity": "R$210k",
+            "opportunity_sub": "annual revenue · top underserved state",
+            "pitch": "There are states with thousands of orders and almost no local sellers. Customers wait twice as long, leave bad reviews, and never come back. This agent finds the gaps and writes the recruitment brief.",
+            "recovers": "Turns geographic data into a seller recruitment pipeline. One brief per market, on demand.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#38bdf8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ GEO EXPANSION SCOUT · Q4 2018 seller recruitment</div>
-  <div style="color:#6060a0;margin-bottom:16px">Scoring: order_volume · seller_count · on_time_rate · avg_delivery_days</div>
+  <div style="color:#38bdf8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ GEO EXPANSION SCOUT · Q4 seller recruitment</div>
   <div style="color:#eeeeff;margin-bottom:4px">── Opportunity ranking ───────────────────────────────</div>
-  <div style="color:#22d3a0">▲  1  BA (Bahia)      orders: 3,392  sellers:  7  on_time: 79.2%  ← top pick</div>
-  <div style="color:#22d3a0">▲  2  MG (Minas G.)   orders: 7,013  sellers: 34  on_time: 85.1%</div>
-  <div style="color:#f5c542">○  3  RS (R.G.Sul)    orders: 4,880  sellers: 22  on_time: 83.4%</div>
-  <div style="color:#6060a0">   4  PR (Paraná)     orders: 4,175  sellers: 31  on_time: 87.6%  (saturating)</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Market brief: Bahia ───────────────────────────────</div>
-  <div style="color:#6060a0">3,392 orders fulfilled from only 7 local sellers.</div>
-  <div style="color:#6060a0">On-time rate 79.2% vs national avg 89.4% — distance gap.</div>
-  <div style="color:#22d3a0">→ Recruiting 4–6 sellers in Salvador reduces avg delivery by</div>
-  <div style="color:#22d3a0">  est. 3.2 days and lifts on-time above 87%.</div>
-  <div style="color:#22d3a0">→ Revenue opportunity: R$180k–R$240k annually at current demand.</div>
-  <div style="margin-top:12px;color:#3a3a6a">Agent completed in 4.7s · 3 briefs generated</div>
+  <div style="color:#22d3a0">▲  1  BA (Bahia)     3,392 orders  7 sellers   on_time 79%   TOP PICK</div>
+  <div style="color:#22d3a0">▲  2  MG (Minas G.)  7,013 orders  34 sellers  on_time 85%</div>
+  <div style="color:#f5c542">○  3  RS (R.G.Sul)   4,880 orders  22 sellers  on_time 83%</div>
+  <div style="color:#6060a0">   4  PR (Paraná)    4,175 orders  31 sellers  on_time 88%   saturating</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Brief: Bahia ──────────────────────────────────────</div>
+  <div style="color:#6060a0">3,392 orders from 7 local sellers. Avg delivery 24 days.</div>
+  <div style="color:#22d3a0">→ 4–6 new sellers in Salvador → −3.2 days delivery.</div>
+  <div style="color:#22d3a0">→ Revenue opportunity: R$180k–R$240k at current demand.</div>
+  <div style="margin-top:12px;color:#3a3a6a">Completed 4.7s · 3 market briefs generated</div>
 </div>
 """,
         },
     ]
 
-    st.markdown("""
-<div style="margin-bottom:8px">
-  <p class="kpi-label">Torm Data Co. · agentic automation concepts · based on Commerce Leak Studio dataset</p>
+    # ── Hero ───────────────────────────────────────────────────────────────
+    st.markdown(f"""
+<div style="background:#101026;border:1px solid #2a2a55;border-left:4px solid #7c6bff;border-radius:10px;padding:28px 30px;margin-bottom:28px">
+  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px">Torm Data Co. · agentic automation · built on this dataset</p>
+  <h2 style="color:#eeeeff;font-size:28px;font-weight:900;margin:0 0 10px;line-height:1.15">The data already knows where the money is.<br>These agents go get it.</h2>
+  <p style="color:#8d8daf;font-size:15px;line-height:1.65;margin:0 0 20px;max-width:720px">Six automations derived directly from the leaks in this dashboard. Each one runs on a schedule, finds a specific type of revenue at risk, and delivers a decision — not a report.</p>
+  <div style="display:flex;gap:32px;flex-wrap:wrap">
+    <div><p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px">Total opportunity modeled</p><p style="color:#eeeeff;font-size:24px;font-weight:900;margin:0">R$972k+</p></div>
+    <div><p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px">Agents running</p><p style="color:#eeeeff;font-size:24px;font-weight:900;margin:0">6</p></div>
+    <div><p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 4px">Analyst hours automated / week</p><p style="color:#eeeeff;font-size:24px;font-weight:900;margin:0">~12h</p></div>
+  </div>
 </div>
 """, unsafe_allow_html=True)
-    st.markdown("### Agent Prototype Explorer")
-    st.markdown('<p style="color:#8d8daf;font-size:14px;margin:0 0 24px">Six agentic automation prototypes derived from this retail dataset. Each card shows the agent\'s trigger, owner, reasoning approach, and a faux output screenshot.</p>', unsafe_allow_html=True)
 
     if "agent_idx" not in st.session_state:
         st.session_state.agent_idx = 0
@@ -2346,40 +2322,37 @@ if page == "🔮 Agent Prototypes":
             st.rerun()
     with nav_cols[1]:
         pill_html = "".join(
-            f'<span style="display:inline-block;padding:4px 12px;border-radius:999px;font-size:11px;font-family:monospace;margin:0 4px;'
-            f'background:{"#1a1a28" if i != idx else agent["color"] + "22"};'
+            f'<span style="display:inline-block;padding:4px 14px;border-radius:999px;font-size:11px;font-family:monospace;margin:0 3px;'
+            f'background:{"#1a1a28" if i != idx else a["color"] + "22"};'
             f'color:{"#eeeeff" if i == idx else "#5a5a78"};'
-            f'border:1px solid {"" + agent["color"] + "66" if i == idx else "#2a2a40"}">'
+            f'border:1px solid {a["color"] + "55" if i == idx else "#2a2a40"}">'
             f'{a["name"].split()[0]}</span>'
             for i, a in enumerate(AGENTS)
         )
-        st.markdown(f'<div style="text-align:center;padding:6px 0">{pill_html}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="text-align:center;padding:8px 0">{pill_html}</div>', unsafe_allow_html=True)
     with nav_cols[2]:
         if st.button("Next →", use_container_width=True, disabled=(idx == len(AGENTS) - 1)):
             st.session_state.agent_idx += 1
             st.rerun()
 
-    st.markdown("<div style='height:12px'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:8px'></div>", unsafe_allow_html=True)
 
     # ── Agent card ────────────────────────────────────────────────────────
     left, right = st.columns([1, 1], gap="large")
 
     with left:
         st.markdown(f"""
-<div style="background:#0f0f18;border:1px solid #1c1c2a;border-left:4px solid {agent["color"]};border-radius:10px;padding:24px 26px;height:100%">
-  <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px">
-    <span style="background:{agent["color"]}22;color:{agent["color"]};border:1px solid {agent["color"]}44;border-radius:4px;padding:2px 8px;font-family:monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase">{agent["tag"]}</span>
-    <span style="color:#3a3a6a;font-size:12px;font-family:monospace">{idx + 1} / {len(AGENTS)}</span>
+<div style="background:#0f0f18;border:1px solid #1c1c2a;border-left:4px solid {agent["color"]};border-radius:10px;padding:26px 28px">
+  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 14px">{idx + 1} of {len(AGENTS)}</p>
+  <h2 style="color:#eeeeff;font-size:24px;font-weight:900;margin:0 0 4px;line-height:1.2">{agent["name"]}</h2>
+  <div style="margin:0 0 20px">
+    <span style="color:{agent["color"]};font-size:32px;font-weight:900;line-height:1">{agent["opportunity"]}</span>
+    <span style="color:#5a5a78;font-size:12px;font-family:monospace;margin-left:8px">{agent["opportunity_sub"]}</span>
   </div>
-  <h2 style="color:#eeeeff;font-size:22px;font-weight:900;margin:0 0 6px;line-height:1.2">{agent["name"]}</h2>
-  <div style="display:flex;gap:20px;margin:12px 0 20px;flex-wrap:wrap">
-    <span style="font-family:monospace;font-size:11px;color:#6060a0">Trigger: <strong style="color:#a0a0c0">{agent["trigger"]}</strong></span>
-    <span style="font-family:monospace;font-size:11px;color:#6060a0">Owner: <strong style="color:#a0a0c0">{agent["owner"]}</strong></span>
-  </div>
-  <p style="color:#c0c0e0;font-size:14px;line-height:1.7;margin:0 0 20px">{agent["description"]}</p>
-  <div style="background:#0a0a16;border-left:3px solid {agent["color"]}66;border-radius:0 6px 6px 0;padding:12px 14px">
-    <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px">Why agentic?</p>
-    <p style="color:#9090b8;font-size:13px;line-height:1.6;margin:0">{agent["why"]}</p>
+  <p style="color:#c0c0e0;font-size:14px;line-height:1.75;margin:0 0 20px">{agent["pitch"]}</p>
+  <div style="background:#0a0a16;border-left:3px solid {agent["color"]}55;border-radius:0 6px 6px 0;padding:12px 16px">
+    <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 5px">What it recovers</p>
+    <p style="color:#9090b8;font-size:13px;line-height:1.6;margin:0">{agent["recovers"]}</p>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -2387,22 +2360,9 @@ if page == "🔮 Agent Prototypes":
     with right:
         st.markdown(f"""
 <div>
-  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Faux output screenshot</p>
+  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Sample output</p>
   {agent["screenshot"]}
 </div>
 """, unsafe_allow_html=True)
 
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
-    st.divider()
-
-    # ── Summary table ─────────────────────────────────────────────────────
-    st.markdown("### All prototypes at a glance")
-    summary_rows = []
-    for i, a in enumerate(AGENTS):
-        summary_rows.append({
-            "": f"{'→ ' if i == idx else '   '}{a['name']}",
-            "Trigger": a["trigger"].split(" · ")[0],
-            "Owner": a["owner"],
-            "Signal type": a["tag"],
-        })
-    st.dataframe(pd.DataFrame(summary_rows), use_container_width=True, hide_index=True)
