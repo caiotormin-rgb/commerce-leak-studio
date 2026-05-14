@@ -547,9 +547,9 @@ with st.sidebar:
         ("🤖 Executive Brief",  "overview"),
         ("📊 Sales",            "overview"),
         ("📅 Demand",           "overview"),
-        ("🟣 Spend",            "overview"),
-        ("🟡 Customers",        "overview"),
-        ("🟢 Delivery",         "overview"),
+        ("💸 Spend",            "overview"),
+        ("👥 Customers",        "overview"),
+        ("📦 Delivery",         "overview"),
         ("💳 Payments",         "overview"),
         ("🏪 Sellers",          "overview"),
         ("🚨 Risk",             "overview"),
@@ -1206,7 +1206,7 @@ Top category: <strong>{top_category.replace('_', ' ').title()}</strong>.
 # ═══════════════════════════════════════════════════════════════════════════
 # ATTRIBUTION  (indigo)
 # ═══════════════════════════════════════════════════════════════════════════
-if page == "🟣 Spend":
+if page == "💸 Spend":
     # ── Section 1: The Lie ─────────────────────────────────────────────────
     st.markdown(
         '<p style="color:#7c6bff;font-size:10px;letter-spacing:.15em;'
@@ -1425,7 +1425,7 @@ as you change channel mix.
 # ═══════════════════════════════════════════════════════════════════════════
 # FULFILLMENT  (emerald)
 # ═══════════════════════════════════════════════════════════════════════════
-if page == "🟢 Delivery":
+if page == "📦 Delivery":
     # ── Section 1: Delivery SLA ────────────────────────────────────────────
     st.markdown(
         '<p style="color:#22d3a0;font-size:10px;letter-spacing:.15em;'
@@ -1642,7 +1642,7 @@ These regions are the clearest opportunity for localised fulfilment investment.
 # ═══════════════════════════════════════════════════════════════════════════
 # RETENTION  (amber)
 # ═══════════════════════════════════════════════════════════════════════════
-if page == "🟡 Customers":
+if page == "👥 Customers":
     # ── Section 1: Cohorts ────────────────────────────────────────────────
     st.markdown(
         '<p style="color:#f5c542;font-size:10px;letter-spacing:.15em;'
