@@ -284,6 +284,48 @@ st.markdown("""
 
 	  #MainMenu, footer, header { visibility: hidden; }
   hr { border-color: #1c1c2a; }
+
+  /* ── Sidebar nav buttons ───────────────────────────────────────────── */
+  [data-testid="stSidebar"] .stButton {
+    margin: 1px 0 !important;
+  }
+  [data-testid="stSidebar"] .stButton > button {
+    background: transparent !important;
+    border: none !important;
+    border-left: 3px solid transparent !important;
+    border-radius: 0 6px 6px 0 !important;
+    color: #5a5a7a !important;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    text-align: left !important;
+    justify-content: flex-start !important;
+    padding: 8px 14px !important;
+    width: 100% !important;
+    box-shadow: none !important;
+    transition: background 0.12s, color 0.12s, border-color 0.12s !important;
+  }
+  [data-testid="stSidebar"] .stButton > button:hover {
+    background: #13131f !important;
+    color: #c0c0e0 !important;
+    border-left-color: #2a2a44 !important;
+  }
+  [data-testid="stSidebar"] [data-testid="stBaseButton-primary"] {
+    background: #16162a !important;
+    color: #eeeeff !important;
+    border-left-color: #7c6bff !important;
+    font-weight: 700 !important;
+  }
+  [data-testid="stSidebar"] [data-testid="stBaseButton-primary"]:hover {
+    background: #1c1c36 !important;
+  }
+  .nav-section-label {
+    font-family: monospace;
+    font-size: 9px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #2e2e48;
+    padding: 10px 14px 4px;
+  }
 </style>
 """, unsafe_allow_html=True)
 
@@ -501,18 +543,33 @@ with st.sidebar:
     st.markdown(f'<p class="kpi-label" style="margin-top:12px">{PRODUCT_NAME} · by {CONSULTANCY_NAME}</p>', unsafe_allow_html=True)
     st.divider()
 # ── Navigation ─────────────────────────────────────────────────────────────
-    page = st.sidebar.radio("Navigation", [
-        "🤖 Executive Brief",
-        "📊 Sales",
-        "📅 Demand",
-        "🟣 Spend",
-        "🟡 Customers",
-        "🟢 Delivery",
-        "💳 Payments",
-        "🏪 Sellers",
-        "🚨 Risk",
-        "🔮 Agent Prototypes",
-    ])
+    NAV_ITEMS = [
+        ("🤖 Executive Brief",  "overview"),
+        ("📊 Sales",            "overview"),
+        ("📅 Demand",           "overview"),
+        ("🟣 Spend",            "overview"),
+        ("🟡 Customers",        "overview"),
+        ("🟢 Delivery",         "overview"),
+        ("💳 Payments",         "overview"),
+        ("🏪 Sellers",          "overview"),
+        ("🚨 Risk",             "overview"),
+        ("🔮 Agent Prototypes", "agents"),
+    ]
+    if "page" not in st.session_state:
+        st.session_state.page = "🤖 Executive Brief"
+
+    prev_section = None
+    for label, section in NAV_ITEMS:
+        if section != prev_section and prev_section is not None:
+            st.sidebar.markdown('<div class="nav-section-label">AI Layer</div>', unsafe_allow_html=True)
+        prev_section = section
+        is_active = st.session_state.page == label
+        if st.sidebar.button(label, key=f"nav_{label}", use_container_width=True,
+                             type="primary" if is_active else "secondary"):
+            st.session_state.page = label
+            st.rerun()
+
+    page = st.session_state.page
 
 
     min_date = weekly["week_start"].min().date()
@@ -1355,10 +1412,10 @@ as you change channel mix.
         st.markdown("""
 <div class="callout" style="margin-top:32px">
 <strong>Why the gap exists:</strong><br><br>
-• <strong>Ad blockers</strong>: 25–35% of desktop users block GA4<br><br>
-• <strong>iOS ITP</strong>: Safari caps first-party cookies at 7 days<br><br>
-• <strong>Payment redirects</strong>: Stripe/PayPal kills the thank_you event<br><br>
-• <strong>Shopify Checkout</strong>: GTM restricted in new checkout<br><br>
+🔹 <strong>Ad blockers</strong>: 25–35% of desktop users block GA4<br><br>
+🔹 <strong>iOS ITP</strong>: Safari caps first-party cookies at 7 days<br><br>
+🔹 <strong>Payment redirects</strong>: Stripe/PayPal kills the thank_you event<br><br>
+🔹 <strong>Shopify Checkout</strong>: GTM restricted in new checkout<br><br>
 <strong>Fix:</strong> Server-side tracking via GTM Server Container + Meta CAPI
 + Google Enhanced Conversions
 </div>
