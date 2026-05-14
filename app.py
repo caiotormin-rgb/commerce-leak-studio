@@ -385,9 +385,12 @@ WHAT IT MEANS: The leak isn't in the ads. It's in everything after the click. La
 FIRST ACTION: This week — switch from platform dashboards to total revenue ÷ total ad spend as the one number that guides spend decisions. Reach out to any customer whose order arrived more than three days late, before they leave a review. Assign someone to build a 45-day follow-up offer for first-time buyers, with a target of getting 1 in 20 to return."""
 
 
+def _safe_html(s):
+    return escape(s).encode("ascii", "xmlcharrefreplace").decode("ascii")
+
 def render_brief_box(text, opacity=1.0, intro=None):
-    intro_html = f"<em>{escape(intro)}</em>\n\n" if intro else ""
-    return f'<div class="brief-box" style="opacity:{opacity}">{intro_html}{escape(text)}</div>'
+    intro_html = f"<em>{_safe_html(intro)}</em>\n\n" if intro else ""
+    return f'<div class="brief-box" style="opacity:{opacity}">{intro_html}{_safe_html(text)}</div>'
 
 
 def generate_openai_brief(api_key, prompt_context, brief_placeholder):
