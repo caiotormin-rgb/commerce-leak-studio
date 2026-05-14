@@ -2280,9 +2280,9 @@ if page == "🔮 Agent Prototypes":
             "name": "Chargeback Triage",
             "color": "#ff5566",
             "opportunity": "R$420k",
-            "opportunity_sub": "flagged revenue · at risk each year",
-            "pitch": "Every week, fraud risk shifts across categories and no one notices until reconciliation. This agent catches the drift on Monday morning — before the shipment leaves.",
-            "recovers": "Stops bad orders before they ship. Eliminates manual weekly risk review.",
+            "opportunity_sub": "in suspicious orders · spotted each year",
+            "pitch": "Every week, some product categories quietly attract more fraudulent or disputed orders than others — and no one notices until the money is already gone. This agent checks every Monday morning and acts before anything ships.",
+            "recovers": "Stops bad orders before they leave the warehouse. No more end-of-month surprises.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
   <div style="color:#ff5566;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ CHARGEBACK TRIAGE · Mon 02:00 UTC</div>
@@ -2301,27 +2301,27 @@ if page == "🔮 Agent Prototypes":
 """,
         },
         {
-            "name": "LTV Anomaly Detector",
+            "name": "Repeat Customer Detector",
             "color": "#f5c542",
             "opportunity": "R$38k+",
-            "opportunity_sub": "per affected cohort · recovered LTV",
-            "pitch": "Retention drops are invisible until they show up in revenue 90 days later. This agent connects the drop to the operational failure that caused it — while there's still time to act.",
-            "recovers": "Catches retention decay early. Tells you why it happened, not just that it did.",
+            "opportunity_sub": "in lost repeat purchases · per bad month",
+            "pitch": "When customers stop coming back, you don't feel it for months. By then the damage is done. This agent spots the early warning signs each month and tells you exactly what went wrong — a bad delivery run, a dip in reviews — while you can still do something about it.",
+            "recovers": "Catches the problem while there's still time to fix it. Explains the cause, not just the symptom.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
-  <div style="color:#f5c542;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ LTV ANOMALY DETECTOR · monthly run</div>
-  <div style="color:#eeeeff;margin-bottom:4px">── 30d → 90d retention decay ─────────────────────────</div>
-  <div style="color:#6060a0">  Cohort 2017-06   −0.4pp   normal</div>
-  <div style="color:#6060a0">  Cohort 2017-07   −0.5pp   normal</div>
-  <div style="color:#ff5566">▲ Cohort 2017-08   −2.1pp   ANOMALY  (3.2σ)</div>
-  <div style="color:#6060a0">  Cohort 2017-09   −0.6pp   normal</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Aug 2017 cross-reference ──────────────────────────</div>
-  <div style="color:#f5c542">  on_time_rate  81.3%   ← lowest in 12-month window</div>
-  <div style="color:#f5c542">  avg_score      3.6    ← vs 4.1 baseline</div>
-  <div style="margin:16px 0 4px;color:#eeeeff">── Finding ───────────────────────────────────────────</div>
-  <div style="color:#22d3a0">→ Aug fulfillment breakdown suppressed reviews,</div>
-  <div style="color:#22d3a0">  killing repeat intent for 717 customers.</div>
-  <div style="color:#22d3a0">→ Estimated LTV drag: R$38k recoverable.</div>
+  <div style="color:#f5c542;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ REPEAT CUSTOMER DETECTOR · monthly run</div>
+  <div style="color:#eeeeff;margin-bottom:4px">── How many customers came back? ─────────────────────</div>
+  <div style="color:#6060a0">  Jun 2017   return rate  normal</div>
+  <div style="color:#6060a0">  Jul 2017   return rate  normal</div>
+  <div style="color:#ff5566">▲ Aug 2017   return rate  SHARP DROP  ← investigate</div>
+  <div style="color:#6060a0">  Sep 2017   return rate  normal</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── What happened in Aug 2017? ────────────────────────</div>
+  <div style="color:#f5c542">  On-time deliveries  81.3%   ← lowest in the past year</div>
+  <div style="color:#f5c542">  Customer ratings     3.6    ← vs 4.1 in normal months</div>
+  <div style="margin:16px 0 4px;color:#eeeeff">── Conclusion ────────────────────────────────────────</div>
+  <div style="color:#22d3a0">→ Deliveries ran late in August. Ratings fell.</div>
+  <div style="color:#22d3a0">  717 customers didn't come back as a result.</div>
+  <div style="color:#22d3a0">→ Estimated value of those lost repeat purchases: R$38k.</div>
   <div style="margin-top:12px;color:#3a3a6a">Completed 6.8s · 1 anomaly flagged</div>
 </div>
 """,
@@ -2330,9 +2330,9 @@ if page == "🔮 Agent Prototypes":
             "name": "Budget Reallocation Advisor",
             "color": "#7c6bff",
             "opportunity": "R$22k",
-            "opportunity_sub": "incremental LTV · per planning cycle",
-            "pitch": "Quarterly budget planning is a spreadsheet guessing game. This agent reads four signals at once — reviews, delivery, fraud risk, LTV — and tells you exactly where to move the money.",
-            "recovers": "Replaces days of analyst prep. Surfaces the reallocation no one had time to model.",
+            "opportunity_sub": "in extra revenue · per planning cycle",
+            "pitch": "Every quarter, someone builds a spreadsheet and guesses where to put the budget. This agent looks at customer reviews, delivery performance, fraud exposure, and repeat purchase rates all at once — and tells you exactly which categories to double down on and which to pull back from.",
+            "recovers": "Replaces days of analyst prep. Finds the shift no one had time to model.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
   <div style="color:#7c6bff;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ BUDGET REALLOCATION · Q4 · R$480k total</div>
@@ -2353,9 +2353,9 @@ if page == "🔮 Agent Prototypes":
             "name": "Seller Health Monitor",
             "color": "#22d3a0",
             "opportunity": "R$197k",
-            "opportunity_sub": "seller revenue · protected from silent churn",
-            "pitch": "A seller degrading slowly is the hardest leak to see. By the time reviews tank, the damage is done. This agent watches 3,000+ sellers every night and writes the intervention email before you wake up.",
-            "recovers": "Early seller intervention. Auto-drafted alerts mean ops moves in hours, not weeks.",
+            "opportunity_sub": "in seller revenue · caught before it walks out the door",
+            "pitch": "When a seller starts slipping — late deliveries, falling ratings — it happens slowly enough that nobody notices until customers are already complaining. This agent checks all 3,000+ sellers every night and has a warning email drafted before your team gets to work.",
+            "recovers": "Problems get flagged in hours, not weeks. The email is already written.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
   <div style="color:#22d3a0;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ SELLER HEALTH MONITOR · nightly · 3,095 sellers</div>
@@ -2376,9 +2376,9 @@ if page == "🔮 Agent Prototypes":
             "name": "Review Crisis Responder",
             "color": "#ff8a4c",
             "opportunity": "R$85k",
-            "opportunity_sub": "revenue at risk · per review spike event",
-            "pitch": "A 1-star spike is a signal, not a data point. This agent fires the moment it crosses the threshold, traces it back to late deliveries, and has a recovery plan in your inbox before the team gets to work.",
-            "recovers": "Minutes to diagnosis vs. days. CX outreach starts before more reviews post.",
+            "opportunity_sub": "in at-risk revenue · per bad-review wave",
+            "pitch": "When 1-star reviews suddenly spike for a product category, it usually means something went wrong with deliveries — not the product itself. This agent catches the spike the moment it happens, figures out the cause, and has a response plan ready before the team even starts their day.",
+            "recovers": "From spike to action plan in minutes. Customer outreach starts before more damage accumulates.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
   <div style="color:#ff8a4c;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ REVIEW CRISIS RESPONDER · triggered 09:14 UTC</div>
@@ -2400,8 +2400,8 @@ if page == "🔮 Agent Prototypes":
             "color": "#38bdf8",
             "opportunity": "R$210k",
             "opportunity_sub": "annual revenue · top underserved state",
-            "pitch": "There are states with thousands of orders and almost no local sellers. Customers wait twice as long, leave bad reviews, and never come back. This agent finds the gaps and writes the recruitment brief.",
-            "recovers": "Turns geographic data into a seller recruitment pipeline. One brief per market, on demand.",
+            "pitch": "Some states have thousands of customers ordering but almost no local sellers to fulfil them. So packages travel further, arrive later, reviews suffer, and those customers don't come back. This agent finds those gaps and writes the seller recruitment brief for each one.",
+            "recovers": "Turns a map problem into a hiring list. One market brief per state, ready to send.",
             "screenshot": """
 <div style="background:#08080f;border:1px solid #1c1c2a;border-radius:8px;padding:20px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.7">
   <div style="color:#38bdf8;font-size:10px;letter-spacing:.12em;text-transform:uppercase;margin-bottom:12px">◆ GEO EXPANSION SCOUT · Q4 seller recruitment</div>
@@ -2493,21 +2493,21 @@ if page == "🔮 Agent Prototypes":
 
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
 
-    with st.expander("How the opportunity figures were estimated"):
+    with st.expander("Where do these numbers come from?"):
         st.markdown("""
-All figures are derived from the real Olist Brazil dataset (Sep 2016 – Oct 2018) loaded in this dashboard.
-They represent conservative, dataset-grounded proxies — not modeled projections.
+All figures come directly from the real Olist Brazil sales dataset used in this dashboard (covering about 2 years of orders).
+They're conservative estimates based on what actually happened — not forecasts or assumptions.
 
-| Agent | Figure | Method |
+| Agent | Estimated opportunity | How we got there |
 |---|---|---|
-| **Chargeback Triage** | R$420k | Sum of `flagged_revenue` across all months in `chargeback_monthly.csv`. This is the total revenue associated with orders carrying 2+ risk signals over the dataset period (~2 years). |
-| **LTV Anomaly Detector** | R$38k+ | For the worst anomalous cohort (Aug 2017, 717 customers): cohort size × delta between actual 180d LTV and the rolling peer average. Represents LTV that was lost due to the fulfillment breakdown that month. |
-| **Budget Reallocation Advisor** | R$22k | Difference in weighted 180d LTV between the proposed category allocation and the current one, applied to a R$480k quarterly budget. Uses `cohorts_real.csv` LTV and `chargeback_by_category.csv` risk weights. |
-| **Seller Health Monitor** | R$197k | Revenue of the highest-revenue seller currently below the review score threshold (< 3.7, ≥ 50 orders) in `seller_performance.csv`. Represents the revenue footprint at risk of churn or suppression without intervention. |
-| **Review Crisis Responder** | R$85k | Late orders (8–14d bucket) × average order value from `fulfillment_by_category.csv`, applied to the affected category during a spike month. Approximates the revenue pool exposed to repeat-purchase loss from damaged reviews. |
-| **Geo Expansion Scout** | R$210k | Orders in the top underserved state (Bahia: 3,392 orders, 7 sellers) × national average order value × an estimated 1.15× uplift from improved delivery speed. Midpoint of the R$180k–R$240k range shown in the brief. |
+| **Chargeback Triage** | R$420k | We added up the total value of all orders that showed two or more warning signs of fraud or dispute over the two-year period. That's the money that was at risk. |
+| **Repeat Customer Detector** | R$38k+ | We found the worst month for delivery problems (August 2017) and compared how much those 717 customers spent over the following 6 months versus what customers in normal months typically spent. The gap is what was lost. |
+| **Budget Reallocation Advisor** | R$22k | We compared how much repeat customers spend when budget is shifted toward well-performing categories versus the current mix. The R$22k is the difference — applied to a R$480k quarterly budget. |
+| **Seller Health Monitor** | R$197k | This is the annual revenue of the single highest-earning seller currently slipping below acceptable delivery and rating thresholds. It represents what's at risk if nothing is done and that seller gets removed or stops performing. |
+| **Review Crisis Responder** | R$85k | We took the number of late-arriving orders in the affected category during a spike month and multiplied by the average order value. That's the revenue pool where customers are most likely to leave bad reviews and not come back. |
+| **Geo Expansion Scout** | R$210k | Bahia had 3,392 orders but only 7 local sellers, causing much longer delivery times. We multiplied the order volume by the average order value and added a modest uplift for the improvement in customer experience that faster delivery would bring. |
 
-All figures are illustrative of what the agent *surfaces*, not guaranteed recoverable cash.
-The actual opportunity depends on execution, market conditions, and seller response rates.
+These are illustrations of the size of the problem each agent is designed to catch — not a promise of what you'll recover.
+How much you actually get back depends on how quickly you act and how your specific operation responds.
 """)
-        st.markdown('<p class="kpi-label" style="margin-top:8px">Source: olist_orders_dataset · olist_order_payments · olist_order_reviews · cohorts_real · chargeback_monthly</p>', unsafe_allow_html=True)
+        st.markdown('<p class="kpi-label" style="margin-top:8px">Based on: 2 years of Olist Brazil orders · payments · reviews · delivery records</p>', unsafe_allow_html=True)
