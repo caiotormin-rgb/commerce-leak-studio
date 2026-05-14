@@ -259,45 +259,35 @@ def render():
             f'font-family:monospace;font-size:10px;padding:3px 10px;border-radius:4px;margin-right:6px">{w}</span>'
             for w in agent["watches"]
         )
-        st.markdown(f"""
-<div style="background:#0f0f18;border:1px solid #1c1c2a;border-left:4px solid {agent["color"]};border-radius:10px;padding:26px 28px">
-  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px">{idx + 1} of {len(AGENTS)} · monitors</p>
-  <div style="margin-bottom:18px">{watches_html}</div>
-
-  <h2 style="color:#eeeeff;font-size:22px;font-weight:900;margin:0 0 6px;line-height:1.2">{agent["name"]}</h2>
-  <div style="margin:0 0 22px">
-    <span style="color:{agent["color"]};font-size:30px;font-weight:900;line-height:1">{agent["opportunity"]}</span>
-    <span style="color:#5a5a78;font-size:12px;font-family:monospace;margin-left:8px">{agent["opportunity_sub"]}</span>
-  </div>
-
-  <div style="display:flex;flex-direction:column;gap:0">
-
-    <div style="padding:16px 0;border-top:1px solid #1c1c2a">
-      <p style="font-family:monospace;font-size:9px;color:{agent["color"]};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Problem</p>
-      <p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["problem"]}</p>
-    </div>
-
-    <div style="padding:16px 0;border-top:1px solid #1c1c2a">
-      <p style="font-family:monospace;font-size:9px;color:{agent["color"]};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Solution</p>
-      <p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["solution"]}</p>
-    </div>
-
-    <div style="padding:16px 0;border-top:1px solid #1c1c2a">
-      <p style="font-family:monospace;font-size:9px;color:{agent["color"]};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Impact</p>
-      <p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["impact"]}</p>
-    </div>
-
-  </div>
-</div>
-""", unsafe_allow_html=True)
+        c = agent["color"]
+        card_html = (
+            f'<div style="background:#0f0f18;border:1px solid #1c1c2a;border-left:4px solid {c};border-radius:10px;padding:26px 28px">'
+            f'<p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 6px">{idx + 1} of {len(AGENTS)} · monitors</p>'
+            f'<div style="margin-bottom:18px">{watches_html}</div>'
+            f'<h2 style="color:#eeeeff;font-size:22px;font-weight:900;margin:0 0 6px;line-height:1.2">{agent["name"]}</h2>'
+            f'<div style="margin:0 0 22px">'
+            f'<span style="color:{c};font-size:30px;font-weight:900;line-height:1">{agent["opportunity"]}</span>'
+            f'<span style="color:#5a5a78;font-size:12px;font-family:monospace;margin-left:8px">{agent["opportunity_sub"]}</span>'
+            f'</div>'
+            f'<div style="padding:16px 0;border-top:1px solid #1c1c2a">'
+            f'<p style="font-family:monospace;font-size:9px;color:{c};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Problem</p>'
+            f'<p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["problem"]}</p>'
+            f'</div>'
+            f'<div style="padding:16px 0;border-top:1px solid #1c1c2a">'
+            f'<p style="font-family:monospace;font-size:9px;color:{c};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Solution</p>'
+            f'<p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["solution"]}</p>'
+            f'</div>'
+            f'<div style="padding:16px 0;border-top:1px solid #1c1c2a">'
+            f'<p style="font-family:monospace;font-size:9px;color:{c};letter-spacing:.14em;text-transform:uppercase;margin:0 0 7px">Impact</p>'
+            f'<p style="color:#c0c0e0;font-size:13px;line-height:1.7;margin:0">{agent["impact"]}</p>'
+            f'</div>'
+            f'</div>'
+        )
+        st.markdown(card_html, unsafe_allow_html=True)
 
     with right:
-        st.markdown(f"""
-<div>
-  <p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Sample output</p>
-  {agent["screenshot"]}
-</div>
-""", unsafe_allow_html=True)
+        label = '<p style="font-family:monospace;font-size:10px;color:#5a5a78;letter-spacing:.1em;text-transform:uppercase;margin:0 0 8px">Sample output</p>'
+        st.markdown(label + agent["screenshot"], unsafe_allow_html=True)
 
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
 
