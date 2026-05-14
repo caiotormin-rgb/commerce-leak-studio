@@ -1,5 +1,5 @@
 """
-Margin Intelligence Report
+Retail Intelligence
 Retail operating dashboard demo — synthetic attribution modeled on Olist Brazil
 """
 
@@ -28,7 +28,7 @@ import views.categories as pg_categories
 
 # ── Page config ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Margin Intelligence Report",
+    page_title="Retail Intelligence",
     page_icon="◆",
     layout="wide",
     initial_sidebar_state="expanded",

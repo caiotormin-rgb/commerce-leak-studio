@@ -1,4 +1,4 @@
-# Agentic Automation Use Cases — Margin Intelligence Report
+# Agentic Automation Use Cases — Retail Intelligence
 
 Brainstormed 2026-05-13. Based on the synthetic Olist Brazil retail dataset.
 

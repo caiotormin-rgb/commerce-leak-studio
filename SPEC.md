@@ -1,4 +1,4 @@
-# Margin Intelligence Report Spec
+# Retail Intelligence Spec
 
 **File:** `app.py` · **Build:** `python scripts/build_olist_data.py` · **Run:** `streamlit run app.py`
 
@@ -8,8 +8,8 @@
 
 | Element | Detail |
 |---|---|
-| Consultancy | `Torm Data Co.` |
-| Product | `Margin Intelligence Report` |
+| Consultancy | `Torm Studio` |
+| Product | `Retail Intelligence` |
 | Mock retailer | `Casa Viva` |
 | Retailer category | Brazilian home, gifts, and lifestyle marketplace |
 | Promise | "Find the profit leaks hiding between marketing, fulfillment, and retention." |

@@ -1,4 +1,4 @@
-# Margin Intelligence Report Outline
+# Retail Intelligence Outline
 
 **File:** `app.py`  
 **Data build:** `python scripts/build_olist_data.py` (run once, outputs to `data/`)  
@@ -10,8 +10,8 @@
 
 | Element | Detail |
 |---|---|
-| Consultancy | Torm Data Co. |
-| Product | Margin Intelligence Report |
+| Consultancy | Torm Studio |
+| Product | Retail Intelligence |
 | Mock retailer | Casa Viva |
 | Retailer category | Brazilian home, gifts, and lifestyle marketplace |
 | Logo | Code-native Casa Viva `C` mark with emerald / amber / indigo gradient |
