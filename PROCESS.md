@@ -13,7 +13,7 @@ The report scored 47 pain points and ranked 10 product opportunities. The three
 structural findings that shaped what we built:
 
 | Finding | Signal |
-|---|---|
+| --- | --- |
 | CAC crisis | Universal across all communities — paid acquisition up 40–60% since 2023 |
 | Attribution broken | Meta + GA4 data diverge 30–50%; last-click misses community/dark social |
 | Platform risk anxiety | Shopify holds, Amazon suspensions, fee hikes — merchants feel exposed |
@@ -29,7 +29,7 @@ From the report, six use cases were identified as demo-viable (meaning: could be
 shown as a plug-and-play dashboard, not a consulting engagement):
 
 | Use case | Report rank | Demo viability |
-|---|---|---|
+| --- | --- | --- |
 | Attribution dashboard | #2 (post-iOS14) | High — directly maps to ad spend data |
 | Chargeback / dispute defence | #1 | Medium — needs real dispute data |
 | Customer retention & LTV | Cross-cutting | High — standard cohort analysis |
@@ -53,7 +53,7 @@ a concrete operational finding, not just a vanity metric.
 
 Dataset: **Olist Brazilian E-commerce** (public, Kaggle). 9 CSV files.
 
-```
+```text
 olist_orders_dataset.csv          99,441 orders  — status, 4 timestamps
 olist_order_items_dataset.csv    112,650 items   — price, freight, product_id
 olist_order_payments_dataset.csv 103,886 rows    — payment type, installments
@@ -68,7 +68,7 @@ product_category_name_translation.csv  70 rows  — PT → EN category names
 Key facts discovered in exploration:
 
 | Fact | Value |
-|---|---|
+| --- | --- |
 | Date range | Sep 2016 – Oct 2018 |
 | Order statuses | 97% delivered, 0.6% cancelled, 0.3% unavailable |
 | On-time delivery rate | 91.9% |
@@ -112,7 +112,7 @@ What it does:
 4. Aggregates into 4 output files:
 
 | Output file | Contents | Rows |
-|---|---|---|
+| --- | --- | --- |
 | `data/fulfillment_review_lateness.csv` | Avg review score per lateness bucket | 5 |
 | `data/fulfillment_by_category.csv` | On-time rate, delivery days, review score, revenue per category | 43 |
 | `data/fulfillment_monthly.csv` | Monthly trend: on-time rate, avg days, avg review | 22 |
@@ -143,7 +143,7 @@ see the product narrative when API quota or billing is unavailable.
 **Core insight:** delivery lateness is the primary driver of bad reviews.
 
 | Lateness bucket | Avg review score | Orders |
-|---|---|---|
+| --- | --- | --- |
 | On time | 4.29 ★ | 89,451 |
 | 1–3 days late | 3.29 ★ | 1,852 |
 | 4–7 days late | 2.11 ★ | 1,748 |
@@ -179,7 +179,7 @@ Charts:
 
 The app has two data layers:
 
-```
+```text
 Synthetic (data_gen.py)              Real (scripts/build_olist_data.py)
 ────────────────────────             ──────────────────────────────────
 Sales Performance                    Fulfillment Intelligence
@@ -208,7 +208,7 @@ Real data is used for fulfillment and geo because:
 ## 7. Files Changed
 
 | File | Change |
-|---|---|
+| --- | --- |
 | `scripts/build_olist_data.py` | New — aggregation pipeline for real Olist data |
 | `data/*.csv` | Generated — 4 pre-aggregated files (gitignored or reproducible) |
 | `app.py` | Added `load_fulfillment_data()`, `load_geo_real()`, two new tabs |
@@ -220,7 +220,7 @@ Real data is used for fulfillment and geo because:
 
 Immediate:
 
-- [ ] Chargeback risk tab: flag orders with 1★ review + late delivery + high-installment payment as dispute proxies. Show projected monthly loss, categories at highest risk, evidence strength score per order.
+- [x] Chargeback risk tab: flag orders with 1★ review + late delivery + high-installment payment as dispute proxies. Show projected monthly loss, categories at highest risk, evidence strength score per order. → **Done** (Tab 8 — Evidence: Risk)
 - [ ] Cart abandonment proxy: use `order_status = cancelled/unavailable` + payment type as a lightweight abandonment signal until session data is available.
 
 Medium term:

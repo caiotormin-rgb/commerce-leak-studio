@@ -561,20 +561,6 @@ Start at **$2,500**
 
 ---
 
-# MVP Dashboard Tabs
-
-1. **Sales Performance**
-2. **Attribution Reality**
-3. **MER / Spend Efficiency**
-4. **Retention & Cohorts**
-5. **Abandoned Cart**
-6. **Product / Category Performance**
-7. **Reviews & Returns**
-8. **Geo Patterns**
-9. **AI Weekly Brief**
-
----
-
 # The Big Strategic Point
 
 Retention and abandoned cart analysis make the consultancy much stronger.
