@@ -407,28 +407,21 @@ No API key provided. Enter your OpenAI API key in the sidebar, or use demo mode 
         try:
             from openai import OpenAI
             client = OpenAI(api_key=api_key)
-            stream = client.responses.create(
-                model="gpt-oss-20b",
-                input=[
-                    {
-                        "role": "user",
-                        "content": prompt_context,
-                    }
-                ],
-                max_output_tokens=600,
+            stream = client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt_context}],
+                max_tokens=600,
                 stream=True,
             )
             brief_text = ""
-            for event in stream:
-                if event.type == "response.output_text.delta":
-                    brief_text += event.delta
+            for chunk in stream:
+                delta = chunk.choices[0].delta.content or ""
+                if delta:
+                    brief_text += delta
                     brief_placeholder.markdown(
                         render_brief_box(f"{brief_text}▌"),
                         unsafe_allow_html=True,
                     )
-                elif event.type == "error":
-                    err = getattr(event, "error", None)
-                    raise RuntimeError(getattr(err, "message", str(err)))
             brief_placeholder.markdown(render_brief_box(brief_text), unsafe_allow_html=True)
         except Exception as e:
             message = str(e)
@@ -591,9 +584,9 @@ with st.sidebar:
         "OpenAI API key",
         type="password",
         placeholder="sk-...",
-        help="Optional. Live generation uses gpt-oss-20b; demo mode still works when quota is unavailable.",
+        help="Optional. Live generation uses gpt-4o-mini; demo mode still works when quota is unavailable.",
     )
-    st.caption("Live mode uses OpenAI's open-weight gpt-oss-20b model. Demo mode stays visible during quota issues.")
+    st.caption("Live mode uses OpenAI's open-weight gpt-4o-mini model. Demo mode stays visible during quota issues.")
 
     st.divider()
     st.markdown("""
@@ -907,7 +900,7 @@ if page == "🤖 Executive Brief":
     with cta_left:
         top_generate_btn = st.button("Generate client brief", type="primary", use_container_width=True, key="top_ai_generate")
     with cta_right:
-        st.caption(f"AI Brief Studio · {ai_status} · live model gpt-oss-20b · demo fallback remains available")
+        st.caption(f"AI Brief Studio · {ai_status} · live model gpt-4o-mini · demo fallback remains available")
     top_brief_placeholder = st.empty()
     if top_generate_btn:
         generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
