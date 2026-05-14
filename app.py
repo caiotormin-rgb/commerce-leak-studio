@@ -59,14 +59,20 @@ st.markdown("""
   /* Column gap — gives charts breathing room */
   [data-testid="stHorizontalBlock"] { gap: 28px !important; }
 
-  /* Section headings — more vertical air */
-  h3 { margin-top: 28px !important; margin-bottom: 18px !important; }
+  /* Section headings — breathing room on every level */
+  h2 { margin-top: 32px !important; margin-bottom: 20px !important; }
+  h3 { margin-top: 36px !important; margin-bottom: 20px !important; }
+  h4 { margin-top: 28px !important; margin-bottom: 14px !important; }
+
+  /* kpi-label captions that precede charts or sections */
+  .kpi-label { margin-bottom: 10px !important; }
 
   /* Push chart containers down from whatever precedes them */
-  [data-testid="stPlotlyChart"] { margin-top: 12px !important; }
+  [data-testid="stPlotlyChart"]  { margin-top: 16px !important; }
+  [data-testid="stDataFrame"]    { margin-top: 10px !important; }
 
   /* Divider breathing room */
-  [data-testid="stDivider"] { margin: 20px 0 !important; }
+  [data-testid="stDivider"] { margin: 32px 0 !important; }
 
   .callout {
     background: #12122a;
