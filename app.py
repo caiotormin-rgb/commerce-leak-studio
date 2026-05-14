@@ -60,7 +60,10 @@ st.markdown("""
   [data-testid="stHorizontalBlock"] { gap: 28px !important; }
 
   /* Section headings — more vertical air */
-  h3 { margin-top: 8px !important; margin-bottom: 12px !important; }
+  h3 { margin-top: 28px !important; margin-bottom: 18px !important; }
+
+  /* Push chart containers down from whatever precedes them */
+  [data-testid="stPlotlyChart"] { margin-top: 12px !important; }
 
   /* Divider breathing room */
   [data-testid="stDivider"] { margin: 20px 0 !important; }
