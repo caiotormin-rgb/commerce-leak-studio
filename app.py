@@ -2492,3 +2492,22 @@ if page == "🔮 Agent Prototypes":
 """, unsafe_allow_html=True)
 
     st.markdown("<div style='height:32px'></div>", unsafe_allow_html=True)
+
+    with st.expander("How the opportunity figures were estimated"):
+        st.markdown("""
+All figures are derived from the real Olist Brazil dataset (Sep 2016 – Oct 2018) loaded in this dashboard.
+They represent conservative, dataset-grounded proxies — not modeled projections.
+
+| Agent | Figure | Method |
+|---|---|---|
+| **Chargeback Triage** | R$420k | Sum of `flagged_revenue` across all months in `chargeback_monthly.csv`. This is the total revenue associated with orders carrying 2+ risk signals over the dataset period (~2 years). |
+| **LTV Anomaly Detector** | R$38k+ | For the worst anomalous cohort (Aug 2017, 717 customers): cohort size × delta between actual 180d LTV and the rolling peer average. Represents LTV that was lost due to the fulfillment breakdown that month. |
+| **Budget Reallocation Advisor** | R$22k | Difference in weighted 180d LTV between the proposed category allocation and the current one, applied to a R$480k quarterly budget. Uses `cohorts_real.csv` LTV and `chargeback_by_category.csv` risk weights. |
+| **Seller Health Monitor** | R$197k | Revenue of the highest-revenue seller currently below the review score threshold (< 3.7, ≥ 50 orders) in `seller_performance.csv`. Represents the revenue footprint at risk of churn or suppression without intervention. |
+| **Review Crisis Responder** | R$85k | Late orders (8–14d bucket) × average order value from `fulfillment_by_category.csv`, applied to the affected category during a spike month. Approximates the revenue pool exposed to repeat-purchase loss from damaged reviews. |
+| **Geo Expansion Scout** | R$210k | Orders in the top underserved state (Bahia: 3,392 orders, 7 sellers) × national average order value × an estimated 1.15× uplift from improved delivery speed. Midpoint of the R$180k–R$240k range shown in the brief. |
+
+All figures are illustrative of what the agent *surfaces*, not guaranteed recoverable cash.
+The actual opportunity depends on execution, market conditions, and seller response rates.
+""")
+        st.markdown('<p class="kpi-label" style="margin-top:8px">Source: olist_orders_dataset · olist_order_payments · olist_order_reviews · cohorts_real · chargeback_monthly</p>', unsafe_allow_html=True)
