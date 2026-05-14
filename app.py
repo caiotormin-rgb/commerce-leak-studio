@@ -489,6 +489,19 @@ with st.sidebar:
 """, unsafe_allow_html=True)
     st.markdown(f'<p class="kpi-label" style="margin-top:12px">{PRODUCT_NAME} · by {CONSULTANCY_NAME}</p>', unsafe_allow_html=True)
     st.divider()
+# ── Navigation ─────────────────────────────────────────────────────────────
+    page = st.sidebar.radio("Navigation", [
+        "🤖 Executive Brief",
+        "📊 Sales",
+        "📅 Demand",
+        "🟣 Spend",
+        "🟡 Customers",
+        "🟢 Delivery",
+        "💳 Payments",
+        "🏪 Sellers",
+        "🚨 Risk",
+    ])
+
 
     min_date = weekly["week_start"].min().date()
     max_date = weekly["week_start"].max().date()
@@ -764,18 +777,6 @@ Write exactly 3 paragraphs:
 Tone: direct, no fluff, treat the reader as smart. No bullet points. Plain prose.
 """
 
-# ── Navigation ─────────────────────────────────────────────────────────────
-page = st.sidebar.radio("Navigation", [
-    "🤖 Executive Brief",
-    "📊 Sales",
-    "📅 Demand",
-    "🟣 Spend",
-    "🟡 Customers",
-    "🟢 Delivery",
-    "💳 Payments",
-    "🏪 Sellers",
-    "🚨 Risk",
-])
 
 if page == "🤖 Executive Brief":
     # ── Homepage story ─────────────────────────────────────────────────────────
