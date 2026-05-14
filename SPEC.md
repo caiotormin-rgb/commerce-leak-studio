@@ -1,4 +1,4 @@
-# Commerce Leak Studio Spec
+# Retail Pulse Spec
 **File:** `app.py` · **Build:** `python scripts/build_olist_data.py` · **Run:** `streamlit run app.py`
 
 ---
@@ -8,7 +8,7 @@
 | Element | Detail |
 |---|---|
 | Consultancy | `Torm Data Co.` |
-| Product | `Commerce Leak Studio` |
+| Product | `Retail Pulse` |
 | Mock retailer | `Luma & Co.` |
 | Retailer category | Brazilian home, gifts, and lifestyle marketplace |
 | Promise | "Find the profit leaks hiding between marketing, fulfillment, and retention." |

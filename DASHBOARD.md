@@ -1,4 +1,4 @@
-# Commerce Leak Studio Outline
+# Retail Pulse Outline
 
 **File:** `app.py`  
 **Data build:** `python scripts/build_olist_data.py` (run once, outputs to `data/`)  
@@ -11,7 +11,7 @@
 | Element | Detail |
 |---|---|
 | Consultancy | Torm Data Co. |
-| Product | Commerce Leak Studio |
+| Product | Retail Pulse |
 | Mock retailer | Luma & Co. |
 | Retailer category | Brazilian home, gifts, and lifestyle marketplace |
 | Logo | Code-native Luma `L` mark with emerald / amber / indigo gradient |

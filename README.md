@@ -1,4 +1,4 @@
-# Commerce Leak Studio
+# Retail Pulse
 
 A working ecommerce attribution analytics demo modeled on the real
 [Olist Brazilian ecommerce dataset](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce).

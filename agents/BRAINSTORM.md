@@ -1,4 +1,4 @@
-# Agentic Automation Use Cases — Commerce Leak Studio
+# Agentic Automation Use Cases — Retail Pulse
 
 Brainstormed 2026-05-13. Based on the synthetic Olist Brazil retail dataset.
 

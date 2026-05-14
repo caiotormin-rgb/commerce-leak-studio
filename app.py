@@ -1,5 +1,5 @@
 """
-Commerce Leak Studio
+Retail Pulse
 Retail operating dashboard demo — synthetic attribution modeled on Olist Brazil
 """
 
@@ -16,14 +16,14 @@ from html import escape
 from data_gen import load_all
 
 CONSULTANCY_NAME = "Torm Data Co."
-PRODUCT_NAME = "Commerce Leak Studio"
+PRODUCT_NAME = "Retail Pulse"
 RETAILER_NAME = "Luma & Co."
 RETAILER_CATEGORY = "Brazilian home, gifts, and lifestyle marketplace"
-BRAND_PROMISE = "Find the profit leaks hiding between marketing, fulfillment, and retention."
+BRAND_PROMISE = "Real signals. No platform spin. Owner-ready actions."
 
 # ── Page config ────────────────────────────────────────────────────────────
 st.set_page_config(
-    page_title="Commerce Leak Studio",
+    page_title="Retail Pulse",
     page_icon="◆",
     layout="wide",
     initial_sidebar_state="expanded",

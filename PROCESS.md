@@ -129,7 +129,7 @@ If the files are missing, tabs show a build instruction instead of crashing.
 
 ### Product package
 
-The demo is packaged as **Commerce Leak Studio** by **Torm Data Co.** for a mock
+The demo is packaged as **Retail Pulse** by **Torm Data Co.** for a mock
 retailer, **Luma & Co.** The identity is intentionally code-native: a simple `L`
 mark, a restrained dark operating-console palette, and product copy focused on
 finding profit leaks across marketing, fulfillment, retention, and risk.
