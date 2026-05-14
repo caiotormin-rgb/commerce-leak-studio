@@ -2321,9 +2321,6 @@ Turns the action queue and dashboard numbers into a client-ready weekly brief �
         )
 
     st.divider()
-    st.markdown("#### What the prompt sends to the model")
-    with st.expander("View prompt context"):
-        st.code(prompt_context, language="text")
 
 
 # ═══════════════════════════════════════════════════════════════════════════
