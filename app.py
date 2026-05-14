@@ -378,11 +378,11 @@ def file_status(filename):
     return f"Ready · {modified}"
 
 
-DEMO_BRIEF = """WHAT HAPPENED: Ad spend is producing real sales, but the numbers Google and Meta report are inflated — they claim roughly 30% more revenue than Shopify actually recorded. Meanwhile, deliveries are running late often enough that customer ratings are suffering, and most buyers are not coming back for a second purchase.
+DEMO_BRIEF = """WHAT HAPPENED: Google and Meta are claiming about 30% more revenue than Shopify actually recorded. The ad spend is working — but the dashboards are lying about how well. On top of that, enough deliveries are arriving late to visibly hurt customer ratings, and fewer than 1 in 50 buyers comes back for a second purchase.
 
-WHAT IT MEANS: The real problem is not how much you're spending on ads — it's what happens after the click. Late deliveries hurt ratings, poor ratings discourage repeat purchases, and without repeat purchases, every new customer you acquire has to pay for itself immediately. The math stops working.
+WHAT IT MEANS: The leak isn't in the ads. It's in everything after the click. Late deliveries damage ratings. Poor ratings kill repeat purchases. And when customers don't come back, every new order has to pay for itself from scratch. That's why growing spend isn't moving the bottom line.
 
-FIRST ACTION: Three things this week: stop using platform ad dashboards as your source of truth for spend decisions — use total revenue divided by total spend instead. Contact customers whose orders arrived more than three days late before they post a review. And set up a simple follow-up offer for first-time buyers within 45 days, with a goal of getting at least 1 in 20 to come back."""
+FIRST ACTION: This week — switch from platform dashboards to total revenue ÷ total ad spend as the one number that guides spend decisions. Reach out to any customer whose order arrived more than three days late, before they leave a review. Assign someone to build a 45-day follow-up offer for first-time buyers, with a target of getting 1 in 20 to return."""
 
 
 def render_brief_box(text, opacity=1.0, intro=None):
@@ -400,7 +400,7 @@ No API key provided. Enter your OpenAI API key in the sidebar, or use demo mode 
 """,
             unsafe_allow_html=True,
         )
-        brief_placeholder.markdown(render_brief_box(DEMO_BRIEF, 0.72, "Demo output shown while live AI is unavailable:"), unsafe_allow_html=True)
+        brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
         return
 
     with st.spinner("Generating brief..."):
