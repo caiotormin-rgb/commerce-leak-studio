@@ -27,6 +27,27 @@ def render(wf, total_spend, avg_mer, total_claimed, overclaim_pct,
         top_impact = brl(top_row["Impact"])
         top_action = escape(str(top_row["Recommended action"]))
 
+    # ── Three-stage system frame ──────────────────────────────────────────
+    st.markdown("""
+<div style="display:flex;gap:0;margin:0 0 20px;border:1px solid #1c1c2a;border-radius:10px;overflow:hidden">
+  <div style="flex:1;padding:14px 18px;border-right:1px solid #1c1c2a">
+    <p style="color:#7c6bff;font-family:monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">Stage 1</p>
+    <p style="color:#eeeeff;font-weight:700;font-size:14px;margin:0 0 3px">Data Foundation</p>
+    <p style="color:#5a5a7a;font-size:11px;margin:0">Reconcile sources. Establish ground truth. Map what each gap costs.</p>
+  </div>
+  <div style="flex:1;padding:14px 18px;border-right:1px solid #1c1c2a;background:#0f0f18">
+    <p style="color:#22d3a0;font-family:monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">Stage 2 · You are here</p>
+    <p style="color:#eeeeff;font-weight:700;font-size:14px;margin:0 0 3px">Intelligence</p>
+    <p style="color:#5a5a7a;font-size:11px;margin:0">Prioritised action queue. Revenue impact per leak. Monthly AI brief.</p>
+  </div>
+  <div style="flex:1;padding:14px 18px">
+    <p style="color:#f5c542;font-family:monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 4px">Stage 3</p>
+    <p style="color:#eeeeff;font-weight:700;font-size:14px;margin:0 0 3px">Automations</p>
+    <p style="color:#5a5a7a;font-size:11px;margin:0">Agents that watch conditions and take operational actions — not another report.</p>
+  </div>
+</div>
+""", unsafe_allow_html=True)
+
     st.markdown(f"""
     <div class="story-shell">
       <div class="story-header">
@@ -124,53 +145,23 @@ def render(wf, total_spend, avg_mer, total_claimed, overclaim_pct,
 
     st.divider()
 
-    # ── AI Brief (collapsed expander) ─────────────────────────────────────
-    with st.expander("AI-generated brief", expanded=False):
-        cta_left, cta_mid, cta_right = st.columns([0.22, 0.16, 0.62])
-        with cta_left:
-            top_generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="top_ai_generate")
-        with cta_mid:
-            top_demo_btn = st.button("Show demo", use_container_width=True, key="top_ai_demo")
-        with cta_right:
-            st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
-        top_brief_placeholder = st.empty()
-        if top_generate_btn:
-            generate_openai_brief(api_key, prompt_context, top_brief_placeholder)
-        elif top_demo_btn:
-            top_brief_placeholder.markdown(render_brief_box(DEMO_BRIEF), unsafe_allow_html=True)
-
-    st.divider()
-
-    # ── AI-Generated Client Brief (main section) ──────────────────────────
-    st.markdown("### AI-Generated Client Brief")
+    # ── AI Brief ──────────────────────────────────────────────────────────
+    st.markdown("### AI-generated brief")
     st.markdown("""
 <div class="callout">
-Turns the action queue and dashboard numbers into a client-ready weekly brief — one click, 600 words, no prep time. Demo mode runs even without a live API key.
+Turns the opportunity queue above into a plain-language weekly brief — 600 words, no prep time.
+Demo mode runs without an API key.
 </div>
 """, unsafe_allow_html=True)
 
-    col_b1, col_b2, col_b3, col_b4 = st.columns(4)
-    col_b1.metric("MER this week",   f"{last_week['mer']:.2f}x",
-                  delta=f"{(last_week['mer']-prev_week['mer']):.2f} vs prev")
-    col_b2.metric("Shopify revenue", f"R${last_week['shopify_revenue']:,.0f}",
-                  delta=f"{(last_week['shopify_revenue']/prev_week['shopify_revenue']-1)*100:+.1f}%")
-    col_b3.metric("Total spend",     f"R${last_week['total_spend']:,.0f}",
-                  delta=f"{(last_week['total_spend']/prev_week['total_spend']-1)*100:+.1f}%")
-    col_b4.metric("Overclaim",       f"+{last_week['overclaim_pct']:.0f}%",
-                  delta="platforms vs Shopify", delta_color="inverse")
-
-    st.divider()
-
-    col_gen1, col_gen2, col_gen3 = st.columns([0.22, 0.16, 0.62])
-    with col_gen1:
-        generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="tab_ai_generate")
-    with col_gen2:
-        demo_btn = st.button("Show demo", use_container_width=True, key="tab_ai_demo")
-    with col_gen3:
-        st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current dashboard data.")
-
+    cta_left, cta_mid, cta_right = st.columns([0.22, 0.16, 0.62])
+    with cta_left:
+        generate_btn = st.button("Generate brief", type="primary", use_container_width=True, key="ai_generate")
+    with cta_mid:
+        demo_btn = st.button("Show demo", use_container_width=True, key="ai_demo")
+    with cta_right:
+        st.caption("Paste your OpenAI key in the sidebar to generate a live brief from the current numbers.")
     brief_placeholder = st.empty()
-
     if generate_btn:
         generate_openai_brief(api_key, prompt_context, brief_placeholder)
     elif demo_btn:

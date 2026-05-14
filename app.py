@@ -14,17 +14,12 @@ from shared import (
     CONSULTANCY_NAME, PRODUCT_NAME, RETAILER_NAME, RETAILER_CATEGORY, BRAND_PROMISE,
     brl,
 )
-import views.executive_brief as pg_brief
-import views.demand as pg_demand
-import views.sales as pg_sales
-import views.spend as pg_spend
-import views.delivery as pg_delivery
-import views.customers as pg_customers
-import views.payments as pg_payments
-import views.sellers as pg_sellers
-import views.risk as pg_risk
-import views.agents as pg_agents
-import views.categories as pg_categories
+import views.executive_brief  as pg_brief
+import views.data_sources      as pg_data
+import views.revenue_spend     as pg_revenue_spend
+import views.customers_delivery as pg_customers_delivery
+import views.categories_risk   as pg_categories_risk
+import views.agents            as pg_agents
 
 # ── Page config ────────────────────────────────────────────────────────────
 st.set_page_config(
@@ -413,26 +408,15 @@ with st.sidebar:
     st.divider()
 # ── Navigation ─────────────────────────────────────────────────────────────
     NAV_ITEMS = [
-        ("🤖 Executive Brief",  "overview"),
-        ("📈 Revenue",          "overview"),
-        ("🏷️ Categories",       "overview"),
-        ("📅 Demand",           "overview"),
-        ("🎯 Attribution",      "overview"),
-        ("🔄 Retention",        "overview"),
-        ("🚚 Fulfillment",      "overview"),
-        ("💳 Payments",         "overview"),
-        ("🏪 Sellers",          "overview"),
-        ("🚨 Risk",             "overview"),
-        ("🔮 Agent Prototypes", "agents"),
+        ("◆ Overview",           "overview"),
+        ("① Data Foundation",    "data"),
+        ("② Intelligence",       "insights"),
+        ("③ Automations",        "agents"),
     ]
     if "page" not in st.session_state:
-        st.session_state.page = "🤖 Executive Brief"
+        st.session_state.page = "◆ Overview"
 
-    prev_section = None
-    for label, section in NAV_ITEMS:
-        if section != prev_section and prev_section is not None:
-            st.sidebar.markdown('<div class="nav-section-label">AI Layer</div>', unsafe_allow_html=True)
-        prev_section = section
+    for label, _ in NAV_ITEMS:
         is_active = st.session_state.page == label
         if st.sidebar.button(label, key=f"nav_{label}", use_container_width=True,
                              type="primary" if is_active else "secondary"):
@@ -709,7 +693,7 @@ Tone: direct, clear, no filler. A busy founder should understand every sentence.
 """
 
 # ── Routing ────────────────────────────────────────────────────────────────
-if page == "🤖 Executive Brief":
+if page == "◆ Overview":
     pg_brief.render(
         wf=wf, total_spend=total_spend, avg_mer=avg_mer,
         total_claimed=total_claimed, overclaim_pct=overclaim_pct,
@@ -719,39 +703,39 @@ if page == "🤖 Executive Brief":
         api_key=api_key, prompt_context=prompt_context,
         last_week=last_week, prev_week=prev_week,
     )
-elif page == "📈 Revenue":
-    pg_sales.render(wf=wf, cf=cf, total_rev=total_rev)
-elif page == "🏷️ Categories":
-    pg_categories.render(
-        cf=cf, reviews_f=reviews_f, returns_f=returns_f,
-        rv_by_category=rv_by_category, fl_by_category=fl_by_category,
-        pay_by_category=pay_by_category, cb_category_df=cb_category_df,
+
+elif page == "① Data Foundation":
+    pg_data.render(
+        weekly=weekly, cohorts_real=cohorts_real, fl_monthly=fl_monthly,
+        seller_perf=seller_perf, pay_by_type=pay_by_type,
+        cb_monthly_df=cb_monthly_df, season_monthly=season_monthly,
+        returns=returns,
     )
-elif page == "📅 Demand":
-    pg_demand.render(season_monthly=season_monthly, season_cat_monthly=season_cat_monthly)
-elif page == "🎯 Attribution":
-    pg_spend.render(wf=wf)
-elif page == "🔄 Retention":
-    pg_customers.render(
-        cohorts_real=cohorts_real, rv_distribution=rv_distribution,
-        rv_monthly=rv_monthly, rv_by_category=rv_by_category,
-    )
-elif page == "🚚 Fulfillment":
-    pg_delivery.render(
-        fl_review_lateness=fl_review_lateness, fl_by_category=fl_by_category,
-        fl_monthly=fl_monthly, geo_real=geo_real,
-    )
-elif page == "💳 Payments":
-    pg_payments.render(
-        pay_by_type=pay_by_type, pay_installments=pay_installments,
-        pay_by_category=pay_by_category, pay_by_state=pay_by_state,
-    )
-elif page == "🏪 Sellers":
-    pg_sellers.render(seller_perf=seller_perf, seller_conc=seller_conc)
-elif page == "🚨 Risk":
-    pg_risk.render(
-        cb_monthly_df=cb_monthly_df, cb_category_df=cb_category_df,
-        cb_evidence_df=cb_evidence_df,
-    )
-elif page == "🔮 Agent Prototypes":
+
+elif page == "② Intelligence":
+    tab1, tab2, tab3 = st.tabs(["Spend & Revenue", "Orders & Delivery", "Categories & Risk"])
+    with tab1:
+        pg_revenue_spend.render(
+            wf=wf, cf=cf, total_rev=total_rev,
+            season_monthly=season_monthly, season_cat_monthly=season_cat_monthly,
+        )
+    with tab2:
+        pg_customers_delivery.render(
+            cohorts_real=cohorts_real, rv_distribution=rv_distribution,
+            rv_monthly=rv_monthly, rv_by_category=rv_by_category,
+            fl_review_lateness=fl_review_lateness, fl_by_category=fl_by_category,
+            fl_monthly=fl_monthly, geo_real=geo_real,
+        )
+    with tab3:
+        pg_categories_risk.render(
+            cf=cf, reviews_f=reviews_f, returns_f=returns_f,
+            rv_by_category=rv_by_category, fl_by_category=fl_by_category,
+            pay_by_category=pay_by_category, cb_category_df=cb_category_df,
+            pay_by_type=pay_by_type, pay_installments=pay_installments,
+            pay_by_state=pay_by_state, seller_perf=seller_perf,
+            seller_conc=seller_conc, cb_monthly_df=cb_monthly_df,
+            cb_evidence_df=cb_evidence_df,
+        )
+
+elif page == "③ Automations":
     pg_agents.render()
